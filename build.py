@@ -1,4 +1,4 @@
-"""Join src/ into the deployable pages index.html and umrah.html."""
+"""Join src/ into the deployable pages trip.html and umrah.html."""
 import json
 import pathlib
 
@@ -19,7 +19,7 @@ def umrah_dashboard():
 
 
 pages = {
-    "index.html": ("form.html", read("prompt.md"), read("dashboard.html")),
+    "trip.html": ("form.html", read("prompt.md"), read("dashboard.html")),
     "umrah.html": ("umrah-form.html", read("umrah-prompt.md"), umrah_dashboard()),
 }
 builder = read("prompt.js").split("if (typeof module")[0].strip()

@@ -1,13 +1,13 @@
 ---
 version: 1
 slug: "index-html"
-primary_target: "index.html"
+primary_target: "trip.html"
 related_targets: ["src/dashboard.html","src/form.html"]
 ---
 
 # Trip-brief form and travel dashboard
 
-Scope: `index.html` (the form, built from `src/form.html`) and `src/dashboard.html` (the dashboard template shipped inside the prompt).
+Scope: `trip.html` (the form, built from `src/form.html`) and `src/dashboard.html` (the dashboard template shipped inside the prompt).
 Mode: Operate (form); the dashboard is Read with Operate tabs.
 
 Audience and job: a reel viewer fills a trip brief once, copies the generated prompt, pastes it into Claude.

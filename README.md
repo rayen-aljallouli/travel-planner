@@ -6,7 +6,7 @@ Planning a trip usually means hours of searching, 50 open Chrome tabs and a head
 
 | Tool | What Claude plans for you |
 | --- | --- |
-| **[Trip planner](https://rayen-aljallouli.github.io/travel-planner/)** | Flights, places to stay, experiences, getting around, food, a day-by-day plan, costs and entry rules for any destination. |
+| **[Trip planner](https://rayen-aljallouli.github.io/travel-planner/trip.html)** | Flights, places to stay, experiences, getting around, food, a day-by-day plan, costs and entry rules for any destination. |
 | **[Umrah planner](https://rayen-aljallouli.github.io/travel-planner/umrah.html)** | Your nights in Madinah and Makkah, flights, hotels near the Haram, the train between the cities, visa and Nusuk, agency packages compared with booking it yourself, and an Umrah checklist with sources. |
 
 Both come in English and Arabic, with prices in EUR or TND.
@@ -36,8 +36,9 @@ If the tools saved you time, you can buy me a coffee:
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | The built trip planner page. |
-| `umrah.html` | The built Umrah planner page. These two files are all GitHub Pages needs. |
+| `trip.html` | The built trip planner page. |
+| `umrah.html` | The built Umrah planner page. |
+| `index.html` | Forwards the bare site address to `trip.html`. |
 | `src/form.html`, `src/umrah-form.html` | The two forms: markup and texts in both languages. |
 | `src/form.css`, `src/form-core.js` | Styles and form logic shared by both pages. |
 | `src/umrah-prompt.md` | The Umrah master prompt template. |
@@ -45,7 +46,7 @@ If the tools saved you time, you can buy me a coffee:
 | `src/prompt.md` | The master prompt template. `[[visa]]`, `[[novisa]]`, `[[english]]`, `[[arabic]]`, `[[kids]]` mark the parts that depend on the form. |
 | `src/dashboard.html` | The dashboard template that ships inside the prompt. |
 | `src/prompt.js` | Fills the template with the form data. |
-| `build.py` | Joins `src/` into `index.html` and `umrah.html`. |
+| `build.py` | Joins `src/` into `trip.html` and `umrah.html`. |
 | `test.js` | Checks the prompt builder. |
 
 ### Change something
@@ -54,12 +55,6 @@ If the tools saved you time, you can buy me a coffee:
 python3 build.py   # rebuild both pages after editing src/
 node test.js       # check the prompt builders
 ```
-
-### Publish on GitHub Pages
-
-1. Push this folder to a public GitHub repository.
-2. Repository **Settings → Pages → Build and deployment**: source "Deploy from a branch", branch `main`, folder `/ (root)`.
-3. The pages are live at `https://<user>.github.io/<repo>/` and `https://<user>.github.io/<repo>/umrah.html`.
 
 ## License
 

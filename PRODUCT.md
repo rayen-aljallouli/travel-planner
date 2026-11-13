@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Static HTML/CSS/JS, one deployable `index.html`, hosted on GitHub Pages (decided by Rayen). Sources in `src/`, joined by `build.py` (Python stdlib).
+Static HTML/CSS/JS, deployable `trip.html` and `umrah.html`, hosted on GitHub Pages (decided by Rayen). Sources in `src/`, joined by `build.py` (Python stdlib).
 
 ## Users
 
