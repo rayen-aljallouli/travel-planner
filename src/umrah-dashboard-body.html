@@ -1,0 +1,182 @@
+<!-- Arabic version: set lang="ar" dir="rtl" on <html> and translate every label. -->
+<header class="hero wrap">
+  <h1>{Umrah · Madinah → Makkah}</h1>
+  <ul class="facts">
+    <li>{10 – 20 Feb 2027 · 10 nights}</li>
+    <li>{Madinah 4 · Makkah 6}</li>
+    <li>{2 adults}</li>
+    <li>{Budget 3,000 EUR}</li>
+  </ul>
+</header>
+
+<nav class="tabs"><div class="wrap" role="tablist">
+  <button role="tab" id="t1" aria-controls="p1">Overview</button>
+  <button role="tab" id="t2" aria-controls="p2">Visa &amp; Nusuk</button>
+  <button role="tab" id="t3" aria-controls="p3">Flights</button>
+  <button role="tab" id="t4" aria-controls="p4">Makkah</button>
+  <!-- Remove the Madinah tab and its panel when the trip has no nights in Madinah. -->
+  <button role="tab" id="t5" aria-controls="p5">Madinah</button>
+  <button role="tab" id="t6" aria-controls="p6">Day plan</button>
+  <button role="tab" id="t7" aria-controls="p7">Costs</button>
+  <button role="tab" id="t8" aria-controls="p8">Umrah guide</button>
+</div></nav>
+
+<main class="wrap">
+
+<section id="p1" role="tabpanel" aria-labelledby="t1">
+  <h2>Your route</h2>
+  <p>{Recommended order and airports, and why in two sentences}</p>
+  <h2>Budget split</h2>
+  <div>
+    <!-- One .bar per item: flights, hotels, transfers and train, visa, buffer. --w is its share of the total. -->
+    <div class="bar"><span>{Flights}</span><i style="--w:{30%}"></i><b class="num">{900 EUR}</b></div>
+  </div>
+  <h2>Winners</h2>
+  <dl class="pairs">
+    <dt>{Flight}</dt><dd>{Winner, price, one reason}</dd>
+  </dl>
+  <h2>Package or on your own?</h2>
+  <p>{Verdict with the price difference and the reason}</p>
+  <h2>Book in this order</h2>
+  <ol class="steps">
+    <li><div><b>{Step}</b><br>{Deadline, and until when it can be cancelled}</div></li>
+  </ol>
+</section>
+
+<section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+  <h2>Visa</h2>
+  <ol class="steps">
+    <li><div><b>{Step}</b><br>{What to do, cost, processing time} <a href="{official URL}" target="_blank" rel="noopener">{Source}</a></div></li>
+  </ol>
+  <p class="note">{Latest date to apply, and the date the sources were checked}</p>
+  <h2>Nusuk</h2>
+  <ol class="steps">
+    <li><div><b>{Permit or booking}</b><br>{When it opens and how to book it} <a href="{official URL}" target="_blank" rel="noopener">{Source}</a></div></li>
+  </ol>
+  <h2>Health</h2>
+  <dl class="info">
+    <div><dt>{Vaccination}</dt><dd>{Required or recommended, by when} <a href="{official URL}" target="_blank" rel="noopener">{Source}</a></dd></div>
+  </dl>
+</section>
+
+<section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
+  <!-- One heading and table per leg (outbound, return) or per return trip. -->
+  <h2>{Tunis} → {Madinah}</h2>
+  <p class="note">{When the prices were read}</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Airline</th><th>Depart → arrive</th><th>Duration</th><th>Stops</th><th>Baggage</th><th>Price</th><th></th></tr></thead>
+    <tbody>
+      <!-- One row per option, at least 3. Add class="pick" to the top recommendation only. -->
+      <tr class="pick">
+        <td><b>{Airline}</b><br><span class="tag pick">Top pick</span></td>
+        <td class="num"><span dir="ltr">{08:40 → 15:55}</span></td>
+        <td class="num">{5 h 15}</td>
+        <td>{Direct}</td>
+        <td>{23 kg + Zamzam 5 l}</td>
+        <!-- Price tag: "live" with site and time read, or "est" with the source. Below it the verification tag. -->
+        <td><span class="price">{410 EUR}</span><br><span class="tag live">{Live · Google Flights · 14:32}</span><br><span class="tag live">{Confirmed bookable · Google Flights · 14:40}</span></td>
+        <td><a class="btn" href="{real booking or search URL}" target="_blank" rel="noopener">{Book}</a></td>
+      </tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="p4" role="tabpanel" aria-labelledby="t4" hidden>
+  <h2>Hotels in Makkah</h2>
+  <div class="grid">
+    <!-- One .card per hotel. Add "pick" to the best one only. -->
+    <article class="card pick">
+      <div class="head"><h3>{Hotel name}</h3><span class="score">{8.9}</span></div>
+      <span class="tag pick">Top pick</span>
+      <div class="price">{140 EUR} <small>per night · {840 EUR} total</small></div>
+      <span class="tag live">{Live · Booking.com · 14:50}</span>
+      <span class="tag live">{Confirmed bookable · Booking.com · 14:52}</span>
+      <p class="num">{350 m · 5 min on foot to the nearest gate}</p>
+      <ul class="pros"><li>{Strength 1}</li><li>{Strength 2}</li><li>{Strength 3}</li></ul>
+      <ul class="cons"><li>{Weakness 1}</li><li>{Weakness 2}</li></ul>
+      <p class="note">{Room type, breakfast, free cancellation until}</p>
+      <a class="btn" href="{real URL}" target="_blank" rel="noopener">{Book}</a>
+    </article>
+  </div>
+  <h2>Getting around Makkah</h2>
+  <dl class="info">
+    <div><dt>{Airport to hotel}</dt><dd>{Options, price, duration}</dd></div>
+  </dl>
+</section>
+
+<section id="p5" role="tabpanel" aria-labelledby="t5" hidden>
+  <h2>Hotels in Madinah</h2>
+  <div class="grid">
+    <article class="card">
+      <div class="head"><h3>{Hotel name}</h3><span class="score">{9.0}</span></div>
+      <div class="price">{110 EUR} <small>per night · {440 EUR} total</small></div>
+      <span class="tag est">{Estimate · Booking.com}</span>
+      <span class="tag est">Not verified</span>
+      <p class="num">{200 m · 3 min on foot to the nearest gate}</p>
+      <ul class="pros"><li>{Strength 1}</li><li>{Strength 2}</li><li>{Strength 3}</li></ul>
+      <ul class="cons"><li>{Weakness 1}</li><li>{Weakness 2}</li></ul>
+      <p class="note">{Room type, breakfast, free cancellation until}</p>
+      <a class="btn" href="{real URL}" target="_blank" rel="noopener">{Book}</a>
+    </article>
+  </div>
+  <h2>Madinah ↔ Makkah</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Option</th><th>Duration</th><th>Price</th><th>Booking</th><th></th></tr></thead>
+    <tbody>
+      <tr><td><b>{Haramain train}</b></td><td class="num">{2 h 15}</td><td class="num">{45 EUR}</td><td>{When sales open, station distance}</td><td><a class="btn ghost" href="{official URL}" target="_blank" rel="noopener">{Details}</a></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="p6" role="tabpanel" aria-labelledby="t6" hidden>
+  <h2>Day by day</h2>
+  <div>
+    <!-- One .day per travel day. Logistics only, planned around the prayer times. -->
+    <div class="day">
+      <h3>{Day 1}<small>{Wed 10 Feb}</small></h3>
+      <dl class="pairs">
+        <dt>Morning</dt><dd>{Plan}</dd>
+        <dt>Midday</dt><dd>{Plan}</dd>
+        <dt>Evening</dt><dd>{Plan}</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="p7" role="tabpanel" aria-labelledby="t7" hidden>
+  <h2>What it costs</h2>
+  <div class="scroll"><table class="costs" style="min-width:0">
+    <thead><tr><th>Item</th><th>Price</th></tr></thead>
+    <tbody>
+      <tr><td>{Item}</td><td class="num">{900 EUR}</td></tr>
+    </tbody>
+  </table></div>
+  <div class="total"><span>Total</span><span class="num">{2,840 EUR}</span></div>
+  <p class="note">{Exchange rate, its source and date}</p>
+  <h2>Packages compared</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Agency</th><th>Included</th><th>Departure</th><th>Price</th><th></th></tr></thead>
+    <tbody>
+      <tr><td><b>{Agency}</b><br><span class="note">{Licence checked where, or not confirmed}</span></td><td>{Flights, hotels with distance, visa, transfers}</td><td class="num">{9 Feb}</td><td><span class="price">{3,100 EUR}</span></td><td><a class="btn ghost" href="{real URL}" target="_blank" rel="noopener">{Details}</a></td></tr>
+    </tbody>
+  </table></div>
+  <h2>Ways to save</h2>
+  <ul><li>{A concrete saving with the amount}</li></ul>
+</section>
+
+<section id="p8" role="tabpanel" aria-labelledby="t8" hidden>
+  <h2>Miqat and Ihram</h2>
+  <p>{Which Miqat applies on this route and when to enter Ihram} <a href="{source URL}" target="_blank" rel="noopener">{Source}</a></p>
+  <h2>Umrah checklist</h2>
+  <ol class="steps">
+    <li><div><b>{Ihram}</b><br>{One or two practical sentences} <a href="{source URL}" target="_blank" rel="noopener">{Source}</a></div></li>
+  </ol>
+  <p class="note">{Where schools of thought differ, ask a scholar.}</p>
+  <h2>Good to know</h2>
+  <dl class="info">
+    <!-- Packing and Ihram clothing, weather, prayer times, SIM, money, 3 apps, conduct in the two mosques. -->
+    <div><dt>{Topic}</dt><dd>{Text}</dd></div>
+  </dl>
+</section>
+
+</main>

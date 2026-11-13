@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Umrah Planner for Claude</title>
+<meta name="description" content="Fill in your Umrah, copy the prompt, paste it into Claude and get a full Umrah dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:#050B1C; --panel:#0B1730; --field:#0C1A38; --line:#1E2E57; --line-hi:#566BA3;
+  --ink:#F3F6FC; --body:#DCE4F2; --steel:#8FA3C7; --dim:#7C90B9;
+  --crane:#E9C46A; --on-crane:#1A1405; --flag:#8DB4FF; --err:#FF9B8A;
+  --sans:"Tajawal","Segoe UI",Tahoma,sans-serif;
+  --mono:"JetBrains Mono","Tajawal",ui-monospace,monospace;
+  --out:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;scrollbar-color:var(--line-hi) transparent;-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;color:var(--body);font:500 1.0625rem/1.6 var(--sans);
+  background-color:#050B1C;background-attachment:fixed;
+  background-image:
+    radial-gradient(62rem 36rem at 100% -10%,rgba(45,107,255,.3),transparent 70%),
+    linear-gradient(#081636,#050B1C 44%,#02050D);
+}
+[dir=rtl] body{
+  background-image:
+    radial-gradient(62rem 36rem at 0 -10%,rgba(45,107,255,.3),transparent 70%),
+    linear-gradient(#081636,#050B1C 44%,#02050D);
+}
+::selection{background:var(--crane);color:var(--on-crane)}
+:focus-visible{outline:2px solid var(--flag);outline-offset:3px}
+a{color:var(--flag);text-underline-offset:.2em}
+h1,h2{color:var(--ink);font-weight:800;line-height:1.15;margin:0;text-wrap:balance}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+[hidden]{display:none!important}
+
+.page{max-width:74rem;margin-inline:auto;padding:clamp(1.5rem,4vw,3rem) clamp(1rem,4vw,2.5rem) 3rem}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:start;gap:1.5rem 3rem;margin-bottom:clamp(2rem,5vw,3.5rem)}
+.top h1{font-size:clamp(2.1rem,6vw,3.4rem);letter-spacing:-.02em}
+.lede{margin:.9rem 0 0;max-width:46ch;color:var(--steel)}
+.switches{display:flex;gap:.75rem;flex-wrap:wrap}
+
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.seg{display:inline-flex;gap:2px;border:1px solid var(--line);border-radius:12px;padding:3px;background:var(--field)}
+.seg label{position:relative}
+.seg input,.chip input{position:absolute;opacity:0;inset:0;margin:0;pointer-events:none}
+.seg span{display:block;padding:.4rem .9rem;border-radius:8px;font-weight:700;color:var(--steel);cursor:pointer;transition:background .2s,color .2s}
+.seg span:hover{color:var(--ink)}
+.seg input:checked+span{background:#1F3672;color:var(--ink)}
+.seg input:focus-visible+span,.chip input:focus-visible+span{outline:2px solid var(--flag);outline-offset:2px}
+
+form{display:grid;gap:3rem}
+section+section{margin-top:3.25rem}
+section h2{font-size:1.45rem;margin-bottom:1.25rem}
+.row{display:grid;gap:1.1rem;margin-bottom:1.1rem}
+.f{display:grid;gap:.45rem;min-width:0;align-content:start}
+label,legend{font-weight:700;color:var(--ink);padding:0}
+.hint{margin:0;color:var(--steel);font-size:.95rem}
+.err{margin:0;color:var(--err);font-size:.95rem}
+input[type=text],input[type=date],input[type=number],select,textarea{
+  width:100%;min-height:3.25rem;padding:.75rem 1rem;font:500 1.05rem var(--sans);color:var(--ink);caret-color:var(--crane);
+  background:var(--field);border:1px solid var(--line-hi);border-radius:14px;transition:border-color .2s;
+}
+textarea{resize:vertical;line-height:1.5}
+select{appearance:none;padding-inline-end:2.75rem;background-repeat:no-repeat;background-size:1.1rem;background-position:right 1rem center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238FA3C7' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+[dir=rtl] select{background-position:left 1rem center}
+::placeholder{color:var(--dim);opacity:1}
+input:hover,select:hover,textarea:hover{border-color:var(--steel)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--crane);outline-offset:1px;border-color:var(--crane)}
+[aria-invalid=true]{border-color:var(--err)}
+input:disabled{opacity:.45;cursor:not-allowed}
+input[type=number]{font-family:var(--mono);font-variant-numeric:tabular-nums;appearance:textfield;-moz-appearance:textfield}
+input[type=number]::-webkit-inner-spin-button{appearance:none}
+
+.check{display:flex;gap:.7rem;align-items:center;font-weight:500;color:var(--body);cursor:pointer;width:fit-content}
+.check input{appearance:none;flex:none;width:1.4rem;height:1.4rem;margin:0;border:1px solid var(--line-hi);border-radius:6px;background:var(--field);display:grid;place-items:center;cursor:pointer;transition:background .2s,border-color .2s}
+.check input::after{content:"";width:.7rem;height:.4rem;border:solid var(--on-crane);border-width:0 0 2.5px 2.5px;transform:translateY(-1px) rotate(-45deg) scale(0);transition:transform .25s var(--out)}
+.check input:checked{background:var(--crane);border-color:var(--crane)}
+.check input:checked::after{transform:translateY(-1px) rotate(-45deg) scale(1)}
+
+.stepper{display:grid;grid-template-columns:3.25rem 1fr 3.25rem;border:1px solid var(--line-hi);border-radius:14px;background:var(--field);overflow:hidden}
+.stepper:focus-within{border-color:var(--crane)}
+.stepper input{border:0;border-radius:0;text-align:center;background:none;padding-inline:0}
+.stepper input:focus-visible{outline:0}
+.stepper button{appearance:none;border:0;background:none;color:var(--steel);cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s}
+.stepper button:hover{background:#13244D;color:var(--ink)}
+.stepper button:active{background:#1F3672}
+.stepper svg,.go svg{width:1.1rem;height:1.1rem;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+.ages{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:1rem}
+.money{position:relative}
+.money input{padding-inline-end:4.25rem}
+.money output{position:absolute;inset-block:0;inset-inline-end:1rem;display:grid;place-items:center;font:700 .95rem var(--mono);color:var(--steel);pointer-events:none}
+
+.chips{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.7rem}
+.chip{position:relative}
+.chip span{display:block;padding:.5rem 1rem;border:1px solid var(--line-hi);border-radius:99px;background:var(--field);color:var(--steel);font-weight:700;cursor:pointer;user-select:none;transition:background .25s,color .25s,border-color .25s,transform .25s var(--out)}
+.chip span:hover{border-color:var(--steel);color:var(--ink)}
+.chip span:active{transform:scale(.96)}
+.chip input:checked+span{background:var(--crane);border-color:var(--crane);color:var(--on-crane)}
+.group{margin-bottom:1.6rem}
+
+.rail{background:linear-gradient(#0F2150,var(--panel) 55%);border:1px solid var(--line);border-radius:22px;padding:1.5rem}
+.bl{margin:0 0 1.75rem}
+.bl div{position:relative;display:grid;grid-template-columns:5.25rem 1fr;gap:.75rem;align-items:baseline;padding:.75rem 0;border-bottom:1px solid var(--line)}
+.bl div::after{content:"";position:absolute;inset-inline:0;bottom:-1px;height:1px;background:var(--crane);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--out)}
+[dir=rtl] .bl div::after{transform-origin:right}
+.bl .set::after{transform:scaleX(1)}
+.bl dt{color:var(--steel);font-size:.92rem;font-weight:700}
+.bl dd{margin:0;font:500 .98rem/1.45 var(--mono);color:var(--dim);overflow-wrap:anywhere;transition:color .4s}
+.bl .set dd{color:var(--crane)}
+
+.go{appearance:none;width:100%;min-height:3.5rem;margin-top:.9rem;display:flex;align-items:center;justify-content:center;gap:.6rem;border:0;border-radius:14px;background:var(--crane);color:var(--on-crane);font:800 1.0625rem var(--sans);cursor:pointer;transition:transform .25s var(--out),background .2s,box-shadow .25s}
+.go:hover{transform:translateY(-2px);background:#F0CF7E;box-shadow:0 12px 24px -10px rgba(0,0,0,.7)}
+.go:active{transform:scale(.98)}
+.go:focus-visible{outline-offset:4px}
+[dir=rtl] .go .dir{transform:scaleX(-1)}
+.go.done{background:var(--flag)}
+
+.result{margin-bottom:1.75rem;animation:rise .7s var(--out) both}
+.result:focus{outline:0}
+#copy{scroll-margin-block:1.5rem}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.result h2{font-size:1.3rem;margin-bottom:.8rem}
+.result textarea{min-height:0;height:calc(4*1.55*.8rem + .75rem + 2px);padding-bottom:0;overflow:hidden;-webkit-mask-image:linear-gradient(var(--ink) 50%,transparent);mask-image:linear-gradient(var(--ink) 50%,transparent);font:500 .8rem/1.55 var(--mono);color:var(--steel);resize:none;text-align:left}
+.meta{margin:.5rem 0 0;font:500 .82rem var(--mono);color:var(--steel)}
+.steps{list-style:none;margin:1.25rem 0 0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2rem 1fr;padding:.65rem 0;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s);font:700 .95rem/1.75 var(--mono);color:var(--crane)}
+
+footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 2rem;margin-top:4rem;padding-top:1.25rem;border-top:1px solid var(--line);color:var(--steel);font-size:.92rem}
+footer a{font:700 .92rem var(--mono);color:var(--steel);text-decoration:none}
+footer a:hover{color:var(--crane)}
+
+@media (min-width:34rem){.two{grid-template-columns:1fr 1fr}}
+@media (min-width:62rem){
+  form{grid-template-columns:minmax(0,1fr) 25rem;gap:4rem;align-items:start}
+  .rail{position:sticky;top:1.5rem;max-height:calc(100vh - 3rem);overflow-y:auto;scrollbar-width:thin}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="top">
+  <div>
+    <h1 data-t="title">Plan your Umrah with Claude</h1>
+    <p class="lede" data-t="lede">No more hours of searching and 50 open tabs. Fill in the brief, copy the prompt, paste it into Claude. You get a full Umrah dashboard: visa and Nusuk, flights, hotels in Makkah and Madinah, day plan, costs and a checklist with sources.</p>
+  </div>
+  <div class="switches">
+    <fieldset class="seg">
+      <legend class="sr" data-t="langLegend">Language</legend>
+      <label><input type="radio" name="lang" value="en" form="brief" checked><span>English</span></label>
+      <label><input type="radio" name="lang" value="ar" form="brief"><span lang="ar">العربية</span></label>
+    </fieldset>
+    <fieldset class="seg">
+      <legend class="sr" data-t="curLegend">Currency</legend>
+      <label><input type="radio" name="currency" value="EUR" form="brief" checked><span>EUR</span></label>
+      <label><input type="radio" name="currency" value="TND" form="brief"><span>TND</span></label>
+    </fieldset>
+  </div>
+</header>
+
+<form id="brief" novalidate>
+  <div>
+    <section>
+      <h2 data-t="sTrip">Your Umrah</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="from" data-t="from">Flying from</label>
+          <input type="text" id="from" name="from" autocomplete="off" maxlength="80" data-ph="fromPh" placeholder="Tunis (TUN)" aria-describedby="from-err">
+          <p class="err" id="from-err" hidden></p>
+        </div>
+        <div class="f">
+          <label for="start" data-t="start">Departure date</label>
+          <input type="date" id="start" name="start" aria-describedby="start-err">
+          <p class="err" id="start-err" hidden></p>
+        </div>
+      </div>
+      <div class="row two">
+        <div class="f">
+          <label for="medina" data-t="medina">Nights in Madinah</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="medina" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="medina" name="medina" min="0" max="30" value="4" inputmode="numeric">
+            <button type="button" data-step="1" data-for="medina" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+        <div class="f">
+          <label for="makkah" data-t="makkah">Nights in Makkah</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="makkah" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="makkah" name="makkah" min="1" max="30" value="5" inputmode="numeric">
+            <button type="button" data-step="1" data-for="makkah" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <fieldset class="group" id="order-group">
+        <legend data-t="orderLegend">Which city first?</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="order" value="medina"><span data-t="oMedina">Madinah first</span></label>
+          <label class="chip"><input type="radio" name="order" value="makkah"><span data-t="oMakkah">Makkah first</span></label>
+          <label class="chip"><input type="radio" name="order" value="any" checked><span data-t="oAny">Either, Claude decides</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="group">
+        <legend data-t="stopsLegend">Flights</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="stops" value="direct"><span data-t="sDirect">Direct only</span></label>
+          <label class="chip"><input type="radio" name="stops" value="stops" checked><span data-t="sStops">Stops are fine</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <section>
+      <h2 data-t="sPeople">Travellers and budget</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="adults" data-t="adults">Adults</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="adults" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="adults" name="adults" min="1" max="12" value="2" inputmode="numeric">
+            <button type="button" data-step="1" data-for="adults" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+        <div class="f">
+          <label for="kids" data-t="kids">Children</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="kids" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="kids" name="kids" min="0" max="12" value="0" inputmode="numeric">
+            <button type="button" data-step="1" data-for="kids" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="ages-row" hidden>
+        <div class="ages" id="ages"></div>
+        <p class="hint" data-t="agesHint">Age on the day of travel. Many airlines and hotels charge by age.</p>
+        <p class="err" id="ages-err" hidden></p>
+      </div>
+      <div class="row">
+        <div class="f">
+          <label for="budget" data-t="budget">Budget for flights and hotels</label>
+          <div class="money">
+            <input type="number" id="budget" name="budget" min="0" step="50" inputmode="numeric" placeholder="3000">
+            <output id="cur">EUR</output>
+          </div>
+        </div>
+      </div>
+      <label class="check"><input type="checkbox" name="nobudget" id="nobudget"><span data-t="noBudget">No fixed budget, find me the best value</span></label>
+    </section>
+
+    <section>
+      <h2 data-t="sHotels">Hotels</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="distance" data-t="distance">Distance to the Haram</label>
+          <select id="distance" name="distance">
+            <option value="walk" data-t="dWalk">Walking distance, under 500 m</option>
+            <option value="km" data-t="dKm">Up to about 1 km</option>
+            <option value="shuttle" data-t="dShuttle">Further out with a shuttle</option>
+          </select>
+        </div>
+        <div class="f">
+          <label for="room" data-t="room">Rooms</label>
+          <select id="room" name="room">
+            <option value="best" data-t="rBest">Best for our group</option>
+            <option value="double" data-t="rDouble">Double rooms</option>
+            <option value="triple" data-t="rTriple">Triple rooms</option>
+            <option value="quad" data-t="rQuad">Quad rooms</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f">
+          <label for="notes" data-t="notes">Anything else Claude should know?</label>
+          <textarea id="notes" name="notes" rows="2" maxlength="500" data-ph="notesPh" placeholder=""></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-t="sPassport">Passport and residence</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="nationality" data-t="nationality">Nationality</label>
+          <input type="text" id="nationality" name="nationality" autocomplete="off" maxlength="60" data-ph="nationalityPh" placeholder="Tunisian" aria-describedby="nationality-err">
+          <p class="err" id="nationality-err" hidden></p>
+        </div>
+        <div class="f">
+          <label for="residence" data-t="residence">Country you live in</label>
+          <input type="text" id="residence" name="residence" autocomplete="off" maxlength="60" data-ph="residencePh" placeholder="Tunisia" aria-describedby="residence-err">
+          <p class="err" id="residence-err" hidden></p>
+        </div>
+      </div>
+      <p class="hint" data-t="natHint">Both decide which visa you can get.</p>
+    </section>
+  </div>
+
+  <aside class="rail">
+    <h2 class="sr" data-t="summary">Your brief</h2>
+    <dl class="bl">
+      <div id="bl-route"><dt data-t="blRoute">Route</dt><dd></dd></div>
+      <div id="bl-dates"><dt data-t="blDates">Dates</dt><dd></dd></div>
+      <div id="bl-who"><dt data-t="blWho">Travellers</dt><dd></dd></div>
+      <div id="bl-budget"><dt data-t="blBudget">Budget</dt><dd></dd></div>
+    </dl>
+
+    <button type="submit" class="go" id="create"><span data-t="go">Create prompt</span><svg class="dir" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <p class="err" id="form-err" role="alert" hidden></p>
+
+    <div class="result" id="result" tabindex="-1" hidden>
+      <h2 data-t="ready">Your prompt is ready</h2>
+      <textarea id="out" readonly dir="ltr" lang="en" data-al="outLabel" aria-label="Generated prompt"></textarea>
+      <p class="meta" id="meta"></p>
+      <button type="button" class="go" id="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><span id="copy-label" data-t="copy">Copy prompt</span></button>
+      <p class="err" id="copy-err" role="alert" hidden></p>
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </aside>
+</form>
+
+<footer>
+  <span data-t="foot">Claude only researches. You book and pay yourself. Independent project, not affiliated with Anthropic.</span>
+  <a href="index.html" data-t="navOther">Trip planner</a>
+  <a href="https://ko-fi.com/rayen_aljallouli" target="_blank" rel="noopener" data-t="support">Support this project on Ko-fi</a>
+  <a href="https://www.instagram.com/rayen.aljallouli/" target="_blank" rel="noopener" dir="ltr">@rayen.aljallouli</a>
+</footer>
+</div>
+
+<script>
+function fillTemplate(tpl, dashboard, on, vars) {
+  return tpl
+    .replace(/\[\[(\w+)\]\]\n?([\s\S]*?)\[\[\/\1\]\]\n?/g, (m, key, body) => (on[key] ? body : ''))
+    .replace(/\{\{(\w+)\}\}/g, (m, key) => (key === 'dashboard' ? m : String(vars[key])))
+    .replace('{{dashboard}}', () => dashboard.trim());
+}
+
+function travellers(d) {
+  const one = (s, max) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, max);
+  const day = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  const count = (n, word, plural) => n + ' ' + (n === 1 ? word : plural);
+  const list = (a) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' and ' + a.at(-1) : a.join(''));
+  const ages = (d.ages || []).map(Number);
+  const by = (lo, hi) => ages.filter((a) => a >= lo && a <= hi).length;
+  const pax = [count(d.adults + by(12, 17), 'adult', 'adults'), by(2, 11) && count(by(2, 11), 'child', 'children'), by(0, 1) && count(by(0, 1), 'infant', 'infants')].filter(Boolean);
+  const cur = d.currency === 'TND' ? 'TND' : 'EUR';
+  return {
+    one, day, ages, cur,
+    who: count(d.adults, 'adult', 'adults') + (ages.length ? ', ' + count(ages.length, 'child', 'children') + ' aged ' + list(ages.map((a) => (a ? String(a) : 'under 1'))) : ''),
+    gf: (q) => 'https://www.google.com/travel/flights?hl=en&curr=' + cur + '&q=' + encodeURIComponent(q + ' for ' + list(pax)),
+    booking: (ci, co) => 'checkin=' + ci + '&checkout=' + co + '&group_adults=' + d.adults + '&group_children=' + ages.length + ages.map((a) => '&age=' + a).join('') + '&no_rooms=1&selected_currency=' + cur,
+    airbnb: (ci, co) => 'checkin=' + ci + '&checkout=' + co + '&adults=' + (d.adults + by(13, 17)) + '&children=' + by(2, 12) + '&infants=' + by(0, 1) + '&currency=' + cur,
+    budget: d.budget ? d.budget + ' ' + d.currency + ' in total' : 'no fixed budget, find the best value for money in a solid mid-range',
+    currency: d.currency === 'TND' ? 'Tunisian dinar (TND)' : 'euro (EUR)',
+    lang_name: d.lang === 'ar' ? 'Modern Standard Arabic' : 'English',
+    notes: one(d.notes, 500) || 'none',
+  };
+}
+
+function buildPrompt(tpl, dashboard, d) {
+  const x = travellers(d);
+  const passport = x.one(d.nationality, 60);
+  const on = { visa: !!passport, novisa: !passport, arabic: d.lang === 'ar', english: d.lang !== 'ar', kids: x.ages.length > 0 };
+  return fillTemplate(tpl, dashboard, on, {
+    dest: x.one(d.dest, 80),
+    from: x.one(d.from, 80),
+    start: x.day(d.start),
+    end: x.day(d.end),
+    nights: Math.round((Date.parse(d.end) - Date.parse(d.start)) / 864e5),
+    flex: d.flex ? 'flexible by ±3 days' : 'fixed dates',
+    who: x.who,
+    gf_link: x.gf('Flights to DEST from ORIG on ' + d.start + ' through ' + d.end),
+    booking_q: x.booking(d.start, d.end),
+    airbnb_q: x.airbnb(d.start, d.end),
+    budget: x.budget,
+    vibes: d.vibes.length ? d.vibes.join(', ') : 'no preference',
+    extras: d.extras.length ? d.extras.join(', ') : 'none',
+    stay: d.stay || 'any',
+    notes: x.notes,
+    nationality: passport || 'not given',
+    nationality_raw: passport,
+    lang_name: x.lang_name,
+    currency: x.currency,
+  });
+}
+
+function buildUmrahPrompt(tpl, dashboard, d) {
+  const x = travellers(d);
+  const plus = (iso, n) => new Date(Date.parse(iso + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+  const total = d.medina + d.makkah, end = plus(d.start, total);
+  const city = { medina: ['Madinah', 'MED', d.medina], makkah: ['Makkah', 'JED', d.makkah] };
+  const plan = (first, label) => {
+    const [a, b] = first === 'medina' ? [city.medina, city.makkah] : [city.makkah, city.medina];
+    const mid = plus(d.start, a[2]);
+    const stay = (c, ci, co) => '- ' + c[0] + ': ' + c[2] + ' nights, ' + x.day(ci) + ' to ' + x.day(co) + '. Booking.com: `https://www.booking.com/searchresults.html?ss=' + c[0] + '&' + x.booking(ci, co) + '`';
+    return [
+      '**' + label + '**',
+      '- Fly in to ' + a[1] + ' on ' + x.day(d.start) + ': `' + x.gf('One way flights to ' + a[1] + ' from ORIG on ' + d.start) + '`',
+      stay(a, d.start, mid),
+      '- Transfer ' + a[0] + ' to ' + b[0] + ' on ' + x.day(mid) + '.',
+      stay(b, mid, end),
+      '- Fly home from ' + b[1] + ' on ' + x.day(end) + ': `' + x.gf('One way flights to ORIG from ' + b[1] + ' on ' + end) + '`',
+      '- Same-airport alternative, return via JED: `' + x.gf('Flights to JED from ORIG on ' + d.start + ' through ' + end) + '`',
+    ].join('\n');
+  };
+  const order = d.medina ? d.order : 'makkah';
+  const plans = !d.medina
+    ? ['**Makkah only**', '- ' + d.makkah + ' nights in Makkah, ' + x.day(d.start) + ' to ' + x.day(end) + '. Booking.com: `https://www.booking.com/searchresults.html?ss=Makkah&' + x.booking(d.start, end) + '`', '- Return flight via JED: `' + x.gf('Flights to JED from ORIG on ' + d.start + ' through ' + end) + '`'].join('\n')
+    : order === 'any' ? plan('medina', 'Plan A: Madinah first') + '\n\n' + plan('makkah', 'Plan B: Makkah first')
+    : plan(order, order === 'medina' ? 'Madinah first' : 'Makkah first');
+  const on = { arabic: d.lang === 'ar', english: d.lang !== 'ar', kids: x.ages.length > 0, anyorder: order === 'any' && d.medina > 0, medina: d.medina > 0, direct: d.stops === 'direct', stops: d.stops !== 'direct' };
+  return fillTemplate(tpl, dashboard, on, {
+    from: x.one(d.from, 80),
+    start: x.day(d.start),
+    end: x.day(end),
+    nights: total,
+    medina: d.medina,
+    makkah: d.makkah,
+    order: !d.medina ? 'Makkah only' : order === 'any' ? 'no preference, recommend the better order' : order === 'medina' ? 'Madinah first, then Makkah' : 'Makkah first, then Madinah',
+    flights: d.stops === 'direct' ? 'direct flights only' : 'stops are fine',
+    who: x.who,
+    budget: x.budget,
+    distance: { walk: 'walking distance to the Haram, under 500 m', km: 'up to about 1 km on foot', shuttle: 'further out with a hotel shuttle is fine' }[d.distance],
+    room: { best: 'whatever room split suits our group best', double: 'double rooms', triple: 'triple rooms', quad: 'quad rooms' }[d.room],
+    nationality: x.one(d.nationality, 60),
+    residence: x.one(d.residence, 60),
+    notes: x.notes,
+    plans,
+    lang_name: x.lang_name,
+    currency: x.currency,
+  });
+}
+const TPL = "# The AI Umrah Planner: Master Prompt\n\nYou are my personal Umrah travel planner. Your job: plan my complete Umrah trip, from the briefing below to a finished, interactive dashboard. You plan and research. I book and pay myself.\n\n## STEP 1: THE BRIEFING (already done)\n\nI filled in a form, so skip the questions and start right away. Ask me something only if two details below contradict each other.\n\n- Departing from: {{from}}\n- Dates: {{start}} to {{end}} ({{nights}} nights)\n- Nights in Madinah: {{medina}} · Nights in Makkah: {{makkah}}\n- Order: {{order}}\n- Flights: {{flights}}\n- Travellers: {{who}}\n- Budget for flights + hotels: {{budget}}\n- Hotels: {{distance}}; rooms: {{room}}\n- Passport: {{nationality}}\n- Country I live in: {{residence}}\n- My notes: {{notes}}\n- Language: {{lang_name}}\n- Currency: {{currency}}\n\nOpen with one line: \"All set. I'm researching now, give me a moment.\" Then go straight to Step 2.\n\n## STEP 2: RESEARCH\n\nFirst check your tools: can you open and operate web pages in a real browser here (Cowork, Claude in Chrome or similar), or do you only have web search and page fetch? Tell me in one line which way you are working.\n\n**With a browser:** open the real websites and collect real data.\n- Read every price from the loaded page itself, not from a search snippet and not from memory.\n- For every price, note the site and the time you read it.\n- If a page does not load or hides its prices, use an alternative site right away and mention it in one sentence.\n\n**Without a browser:** flight and hotel sites load their prices with scripts and block page fetches, so you will not see live prices. Do not try to fetch booking pages.\n- Every flight and hotel price is a range built from what you actually find, with the source named.\n- Work economically: aim for 20 searches or fewer.\n\n**Either way:**\n- Research only. Never book, never pay, never log in, never type personal or payment details into any site.\n- A price you did not read on a loaded booking page is an estimate: give a range and mark it. Never present an estimate as a live price.\n- Every option gets a ready-made search link from the trip plan below, so I can check the real price in one click.\n- No invented prices, no invented links.\n- Visa, Nusuk, health and religious information comes only from official or recognised sources, linked, with the date you checked. Never answer these from memory.\n\n**Trip plan, dates and links**\n\n{{plans}}\n\nIn every Google Flights link, replace ORIG with the 3-letter IATA code of my departure airport and change nothing else: city names, another word order or other wording leave the search empty. Google Flights links can only fill in one-way and return searches. For a trip that flies in to one city and home from the other, give one link per leg, and with a browser also open Google Flights' multi-city search for a combined fare.\n\nWork through the blocks in order:\n\n**Route and flights**\n[[anyorder]]\n- I have no preference for the order. Compare Plan A and Plan B on total price, flight times and effort, recommend one and say why in two sentences.\n[[/anyorder]]\n- Compare flying in to one city and home from the other with a return to the same airport plus the transfer between the cities.\n[[direct]]\n- Direct flights only. If no direct flight exists on my dates, say so and show the best one-stop option separately, clearly marked.\n[[/direct]]\n[[stops]]\n- Stops are fine. Name each stop and its layover time, and check transit visa rules for my passport.\n[[/stops]]\n- At least 3 options per leg or return trip: airline, departure and arrival time, duration, stops, checked baggage allowance, and the Zamzam water allowance where the airline states it.\n\n**Between the cities and from the airports**\n- Madinah ↔ Makkah: Haramain High Speed Railway vs bus vs private car. Price, duration, how and when to book, and where the stations are compared to the hotels (the stations are not at the Haram).\n- Airport to hotel and hotel to airport in each city: options, price, duration.\n\n**Hotels in Makkah**\n[[medina]]\n**Hotels in Madinah**\n[[/medina]]\n- 3 options per city on Booking.com or the hotel's own site, rated 8.0/10 or higher.\n- Walking distance and minutes to Masjid al-Haram (Makkah) and Masjid an-Nabawi (Madinah), from the hotel's door to the nearest gate.\n- Respect my distance and room wishes. Price per night and total for my group, breakfast, cancellation terms, link.\n\n**Agency packages**\n- Find 2 or 3 Umrah packages from agencies in {{residence}} for dates close to mine.\n- For each: total price for my group, what is included (flights, hotels with their distance to the Haram, visa, transfers, guide), departure date, link.\n- Say whether you could confirm the agency's licence, and where you checked it.\n- Compare the best package with the self-organised plan and say which is better value and why.\n\n**Visa, Nusuk and health**\n- Visa: I hold a {{nationality}} passport and live in {{residence}}. Find which route to an Umrah-eligible visa applies to me (for example an Umrah visa, a tourist eVisa, a visa on arrival). Give: how and where to apply, cost, processing time, and the latest date I should apply for this trip. Use the Saudi government visa platform, Nusuk or the embassy, link it, and state the date you checked.\n- Nusuk: what I need the Nusuk app for on this trip (for example the Umrah permit and a visit to the Rawdah in Masjid an-Nabawi), when each can be booked, and the steps. Official Nusuk sources only.\n- Season: check whether Umrah permits are issued for my dates (they pause around Hajj), and whether Ramadan, school holidays or events make it crowded or more expensive.\n- Health: vaccinations that are required or recommended for Umrah pilgrims on my dates, from the Saudi Ministry of Health or the official Hajj and Umrah guidance.\n\n**Miqat and Ihram**\n- Which Miqat applies on the recommended route, and when to enter Ihram (for example on the plane before crossing the Miqat when flying in to Jeddah, or at Dhul Hulayfah when coming from Madinah). Link a recognised source.\n\n**Umrah checklist**\n- A short, practical checklist of the Umrah rites in order: Ihram, Tawaf, Sa'i, and Halq or Taqsir, each step in one or two plain sentences with a link to a recognised source (Nusuk, the Ministry of Hajj and Umrah, or an established Islamic authority).\n- Mainstream practice only. Do not issue rulings of your own. Where schools of thought differ, say so in one line and tell me to ask a scholar.\n\n**Practical**\n- Weather on my dates, prayer times that shape the day plan (Friday prayer included), SIM or eSIM, money (cards and cash), 3 useful apps with what each is for, Ihram and packing list, and conduct in the two mosques.\n\n**Currency**\n- Show every price in {{currency}}.\n- When a site lists another currency (for example SAR), convert with today's exchange rate from a named source and keep the original price in brackets.\n- State the rate, its source and its date once, in the Costs tab.\n\n**Language**\n[[english]]\n- Write the dashboard and your messages to me in English.\n[[/english]]\n[[arabic]]\n- Write the dashboard and your messages to me in Modern Standard Arabic (العربية الفصحى), clear and simple, understandable in every Arab country. Quotes from the Quran or established duas stay in their original wording.\n- Keep names of places, airlines, hotels, websites and apps in Latin script. Use Western digits (0-9).\n- In the template set `\u003chtml lang=\"ar\" dir=\"rtl\">`.\n- Use exactly these labels: Overview = نظرة عامة · Visa & Nusuk = التأشيرة و Nusuk · Flights = الطيران · Makkah = مكة · Madinah = المدينة · Day plan = برنامج الأيام · Costs = التكاليف · Umrah guide = دليل العمرة · Top pick = الخيار الأفضل · Book = احجز · Check the price = تحقّق من السعر · Estimate = تقديري · Live price = سعر مباشر · per night = لليلة · Total = المجموع · on foot = مشيًا · Package = باقة وكالة · Book in this order = احجز بهذا الترتيب · Ways to save = طرق التوفير · Free cancellation until = إلغاء مجاني حتى · Confirmed bookable = متاح للحجز (تم التحقق) · Not verified = لم يتم التحقق\n[[/arabic]]\n[[kids]]\n\n**Children**\n- Price flights and hotels for the exact child ages in the briefing: infant and child fares, a lap seat or own seat for under-2s, free stay or extra bed limits at each hotel.\n- In the Costs tab, say for each child whether they travel and stay free, at a reduced rate or at full price, and add the visa cost per child.\n[[/kids]]\n\n## STEP 2B: AVAILABILITY CHECK (mandatory before the dashboard)\n\nSearch result lists are NOT proof of availability. Booking.com and Google Flights can show sold-out offers with a price. Every offer you recommend must be confirmed on its own detail page, with my exact dates and travellers.\n\n**Hotels (Booking.com)**\n- Open the property's own page (booking.com/hotel/...) with checkin, checkout, group_adults, group_children, age and no_rooms in the URL, the same parameters as the search links above.\n- It counts as available only if the room table shows a selectable unit (a quantity dropdown or a \"Reserve\" button) for the room type you recommend.\n- If the page says \"not available on your dates\", or the room type is missing: drop it, take the next option and check that one the same way.\n- Read the price, the cancellation terms and any \"only X left\" note from the rate row on that page, not from the result list.\n\n**Flights**\n- In Google Flights, open the recommended itinerary until the booking options load with a price.\n- Read the return times there. If the price changes or no booking option appears, mark it and take the next option.\n\n**Train and packages**\n- Haramain train: check on the official site that tickets are on sale for my transfer date. If sales have not opened yet, say when they open.\n- Packages: check that the agency's page lists a departure on or near my dates with a price.\n\n**Re-check and log**\n- Check every top pick again right before you build the dashboard. Prices and availability change within hours.\n- Before Step 3, list for me: each recommended offer, \"confirmed bookable\" or \"replaced\", the site and the time checked.\n- Only offers marked \"confirmed bookable\" may appear as the top pick or a winner.\n- If you cannot open a detail page (no browser, page blocked), tag that offer \"not verified\" and never make it the top pick.\n- Without a browser nothing can be confirmed, so the dashboard has no top pick and no winners at all: no \"Top pick\" tag, no highlighted row or card, no winners list in Overview. Show the options side by side, each tagged \"Not verified\", and open the Flights, Makkah and Madinah tabs with one line in my language: \"Not checked for availability. Let Claude check it in Cowork, or click through yourself.\"\n\n## STEP 3: THE UMRAH DASHBOARD (final deliverable)\n\nHARD RULE ON THE OUTPUT FORMAT, READ IT TWICE: the result is ALWAYS an interactive, clickable HTML dashboard. Under NO circumstances do you create a Word document, a PDF, a Markdown document or a plain-text report. If you are about to produce a .docx or .pdf file: STOP, that is wrong, however much it feels like your default.\n\nOutput: if you can write files here, save the dashboard as ONE self-contained file named `umrah-dashboard.html` in the working folder and show it to me. Otherwise create it as ONE HTML artifact.\n\n**Look and feel**\nBuild the dashboard from the template at the end of this prompt.\n- Keep its `\u003cstyle>` and `\u003cscript>` exactly as they are. Do not restyle, do not rename classes, do not add frameworks or other external resources.\n- Replace every `{placeholder}` with real content, repeat the sample components as often as needed, and remove the HTML comments.\n- It must stay one self-contained HTML unit with working tabs and clickable buttons, readable on a phone.\n\n**Structure**\n- HERO: route with the order of the cities, dates, nights per city, travellers, budget.\n- Tab \"Overview\": the recommended route and why, budget split as bars (flights / hotels / transfers and train / visa / buffer), the clear winner per category (only confirmed offers, see Step 2B), package or self-organised and why, plus a numbered \"Book in this order\" checklist with deadlines (visa, Nusuk permits, flights, hotels, train).\n- Tab \"Visa & Nusuk\": visa route step by step with cost, processing time and the latest date to apply; Nusuk steps; health requirements; every item with its source link and the date checked.\n- Tab \"Flights\": comparison table per leg or return trip, top recommendation highlighted (only if confirmed bookable), every row with a real, clickable button.\n- Tab \"Makkah\"[[medina]] and tab \"Madinah\"[[/medina]]: hotel cards with price per night, total, rating, walking distance and minutes to the mosque, strengths, weaknesses, cancellation, button. Best pick marked (only if confirmed bookable). Below the cards, the transfer options for that city.\n- Tab \"Day plan\": one entry per day with morning / midday / evening, logistics only: arrival, transfers, the Umrah itself, the Rawdah slot, train, visits to well-known sites with opening notes, departure. Plan around the prayer times; no zigzag across the city.\n- Tab \"Costs\": every item listed, the total prominent, the package comparison table, plus 2 or 3 concrete ways to save.\n- Tab \"Umrah guide\": Miqat and Ihram for this route, the Umrah checklist with a source link on every step, packing list, apps, conduct in the two mosques, weather.\n\n**Mandatory details**\n- All links are real `\u003ca href target=\"_blank\" rel=\"noopener\">` buttons.\n- Prices cleanly formatted in {{currency}}.\n- Ratings in the template's score badge. Write only the number, the stylesheet adds the star.\n- Booking deadlines and cancellation terms visible in the dashboard.\n- Every flight and hotel price carries its tag: live (with site and time read) or estimate (with source).\n- Every flight and hotel card carries a verification tag: \"Confirmed bookable · site · time checked\" (template class `tag live`) or \"Not verified\" (template class `tag est`). The top pick and the winners must be \"Confirmed bookable\".\n\n## RULES\n\n- Complete all three steps in full, no shortcuts.\n- Only real, verified prices and links. When in doubt, label it instead of guessing.\n- Never recommend an offer based only on a search result list. No confirmation on the detail page means no recommendation.\n- If my wishes contradict each other (for example walking distance to the Haram on a very small budget): say so honestly and propose the best compromise.\n- Religious content stays short, practical and sourced. No rulings of your own.\n- NEVER deliver it as Word, PDF or a text document. Only as the interactive HTML dashboard described in Step 3.\n\n## DASHBOARD TEMPLATE\n\n```html\n{{dashboard}}\n```\n", DASH = "\u003c!doctype html>\n\u003chtml lang=\"en\" dir=\"ltr\">\n\u003chead>\n\u003cmeta charset=\"utf-8\">\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\u003ctitle>{Destination} trip plan\u003c/title>\n\u003clink rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n\u003clink rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n\u003clink href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Tajawal:wght@500;700;800&display=swap\" rel=\"stylesheet\">\n\u003cstyle>\n:root{--sea:#050B1C;--panel:#0B1730;--field:#0C1A38;--line:#1E2E57;--ink:#F3F6FC;--body:#DCE4F2;--steel:#8FA3C7;--crane:#E9C46A;--on-crane:#1A1405;--flag:#8DB4FF;\n--sans:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;--mono:\"JetBrains Mono\",\"Tajawal\",ui-monospace,monospace;--out:cubic-bezier(.16,1,.3,1)}\n*{box-sizing:border-box}\nhtml{color-scheme:dark;scrollbar-color:var(--line) transparent}\nbody{margin:0;min-height:100vh;color:var(--body);font:500 1.0625rem/1.65 var(--sans);\nbackground-color:#050B1C;background-attachment:fixed;\nbackground-image:radial-gradient(60rem 34rem at 100% -8%,rgba(45,107,255,.3),transparent 70%),linear-gradient(#081636,#050B1C 42%,#02050D)}\n[dir=rtl] body{background-image:radial-gradient(60rem 34rem at 0 -8%,rgba(45,107,255,.3),transparent 70%),linear-gradient(#081636,#050B1C 42%,#02050D)}\n::selection{background:var(--crane);color:var(--on-crane)}\n:focus-visible{outline:2px solid var(--flag);outline-offset:3px;border-radius:6px}\na{color:var(--flag);text-underline-offset:.2em}\nh1,h2,h3{color:var(--ink);font-weight:800;line-height:1.15;margin:0;text-wrap:balance}\n.wrap{max-width:68rem;margin-inline:auto;padding-inline:clamp(1rem,4vw,2.5rem)}\n.hero{padding-block:clamp(2.5rem,8vw,5rem) clamp(1.5rem,4vw,2.5rem)}\n.hero h1{font-size:clamp(2.75rem,10vw,5.75rem);letter-spacing:-.02em}\n.facts{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0;padding:0;list-style:none;font:500 .875rem/1.4 var(--mono)}\n.facts li{border:1px solid var(--line);border-radius:99px;padding:.4em 1em;color:var(--steel)}\n.facts li:first-child{color:var(--crane);border-color:rgba(233,196,106,.5)}\n.tabs{position:sticky;top:0;z-index:2;background:var(--sea);border-block:1px solid var(--line)}\n.tabs .wrap{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}\n.tabs button{flex:none;appearance:none;background:none;border:0;border-bottom:3px solid transparent;color:var(--steel);font:700 1rem var(--sans);padding:1rem .9rem .8rem;cursor:pointer;transition:color .2s,border-color .2s}\n.tabs button:hover{color:var(--ink)}\n.tabs button[aria-selected=true]{color:var(--crane);border-bottom-color:var(--crane)}\nmain{padding-block:clamp(1.75rem,5vw,3rem) 5rem}\nsection{animation:fade .35s ease-out both}\n@keyframes fade{from{opacity:0}}\nh2{font-size:clamp(1.5rem,4vw,2rem);margin:2.75rem 0 1rem}\nsection>h2:first-child{margin-top:0}\nh3{font-size:1.2rem}\np{margin:0 0 1rem;max-width:70ch}\n.note{color:var(--steel);font-size:.95rem}\n.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}\n.bar{display:grid;grid-template-columns:8.5rem 1fr auto;gap:1rem;align-items:center;margin:.75rem 0}\n.bar i{height:.75rem;border-radius:99px;background:var(--field);overflow:hidden}\n.bar i::after{content:\"\";display:block;height:100%;width:var(--w);background:var(--crane);border-radius:inherit;animation:grow .9s var(--out) .2s both}\n@keyframes grow{from{width:0}}\n.pairs{display:grid;grid-template-columns:minmax(7rem,auto) 1fr;gap:.6rem 1.5rem;margin:0}\n.pairs dt{color:var(--steel)}\n.pairs dd{margin:0;color:var(--ink)}\n.steps{list-style:none;margin:0;padding:0;counter-reset:s}\n.steps li{counter-increment:s;display:grid;grid-template-columns:2.25rem 1fr;padding:.8rem 0;border-top:1px solid var(--line)}\n.steps li::before{content:counter(s);font:700 1rem/1.7 var(--mono);color:var(--crane)}\n.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--panel)}\ntable{width:100%;border-collapse:collapse;min-width:44rem}\nth,td{text-align:start;padding:.9rem 1rem;vertical-align:top}\nth{color:var(--steel);font-size:.95rem;font-weight:700;border-bottom:1px solid var(--line)}\ntr+tr td{border-top:1px solid var(--line)}\ntr.pick td{background:rgba(233,196,106,.07)}\n.costs td:last-child,.costs th:last-child{text-align:end}\n.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,18rem),1fr));gap:1.1rem}\n.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:1.35rem;display:flex;flex-direction:column;gap:.7rem;transition:border-color .3s}\n.card:hover{border-color:#566BA3}\n.card.pick{border-color:var(--crane)}\n.card p,.card ul{margin:0}\n.card .btn{margin-top:auto;align-self:start}\n.card>.tag{align-self:start}\n.head{display:flex;justify-content:space-between;align-items:start;gap:.75rem}\n.price{font:700 1.3rem var(--mono);color:var(--ink)}\n.price small{font:500 .85rem var(--sans);color:var(--steel)}\n.score{flex:none;font:700 .85rem var(--mono);background:var(--field);color:var(--ink);border:1px solid #566BA3;border-radius:8px;padding:.2em .55em}\n.score::before{content:\"\";display:inline-block;width:.85em;height:.85em;margin-inline-end:.4em;vertical-align:-.08em;background:currentColor;-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z'/%3E%3C/svg%3E\") center/contain no-repeat;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z'/%3E%3C/svg%3E\") center/contain no-repeat}\nmain ul:not([class]) li::marker{color:var(--crane)}\n.tag{display:inline-block;font:700 .8rem var(--sans);border-radius:99px;padding:.15em .7em;border:1px solid var(--line);color:var(--steel)}\n.tag.pick,.tag.must{background:var(--crane);border-color:var(--crane);color:var(--on-crane)}\n.tag.live{border-color:var(--flag);color:var(--flag)}\n.tag.est{border-style:dashed}\n.pros,.cons{padding-inline-start:1.2rem}\n.pros li::marker{content:\"+  \";color:var(--crane);font-family:var(--mono)}\n.cons li::marker{content:\"−  \";color:var(--steel);font-family:var(--mono)}\n.btn{display:inline-block;background:var(--crane);color:var(--on-crane);font-weight:800;text-decoration:none;border-radius:12px;padding:.6em 1.15em;transition:transform .25s var(--out),box-shadow .25s}\n.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px -8px rgba(0,0,0,.65)}\n.btn.ghost{background:none;color:var(--crane);box-shadow:inset 0 0 0 1px var(--crane)}\n.gem{margin-top:1.5rem;border:1px dashed var(--crane);border-radius:18px;padding:1.5rem;background:rgba(233,196,106,.06)}\n.gem h3{margin-bottom:.5rem}\n.day{display:grid;grid-template-columns:10rem 1fr;gap:1.5rem;padding:1.5rem 0;border-top:1px solid var(--line)}\n.day h3 small{display:block;font:500 .85rem var(--mono);color:var(--steel);margin-top:.3rem}\n.total{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-top:1.25rem;padding-top:1rem;border-top:2px solid var(--crane);color:var(--ink);font-weight:800;font-size:clamp(1.6rem,5vw,2.6rem)}\n.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1.75rem 2.5rem;margin:0}\n.info dt{color:var(--crane);font-weight:700;margin-bottom:.25rem}\n.info dd{margin:0}\n@media (max-width:40rem){.day{grid-template-columns:1fr;gap:.5rem}.bar{grid-template-columns:6.5rem 1fr auto;gap:.6rem}}\n@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}\n\u003c/style>\n\u003c/head>\n\u003cbody>\n\u003c!-- Arabic version: set lang=\"ar\" dir=\"rtl\" on \u003chtml> and translate every label. -->\n\u003cheader class=\"hero wrap\">\n  \u003ch1>{Umrah · Madinah → Makkah}\u003c/h1>\n  \u003cul class=\"facts\">\n    \u003cli>{10 – 20 Feb 2027 · 10 nights}\u003c/li>\n    \u003cli>{Madinah 4 · Makkah 6}\u003c/li>\n    \u003cli>{2 adults}\u003c/li>\n    \u003cli>{Budget 3,000 EUR}\u003c/li>\n  \u003c/ul>\n\u003c/header>\n\n\u003cnav class=\"tabs\">\u003cdiv class=\"wrap\" role=\"tablist\">\n  \u003cbutton role=\"tab\" id=\"t1\" aria-controls=\"p1\">Overview\u003c/button>\n  \u003cbutton role=\"tab\" id=\"t2\" aria-controls=\"p2\">Visa &amp; Nusuk\u003c/button>\n  \u003cbutton role=\"tab\" id=\"t3\" aria-controls=\"p3\">Flights\u003c/button>\n  \u003cbutton role=\"tab\" id=\"t4\" aria-controls=\"p4\">Makkah\u003c/button>\n  \u003c!-- Remove the Madinah tab and its panel when the trip has no nights in Madinah. -->\n  \u003cbutton role=\"tab\" id=\"t5\" aria-controls=\"p5\">Madinah\u003c/button>\n  \u003cbutton role=\"tab\" id=\"t6\" aria-controls=\"p6\">Day plan\u003c/button>\n  \u003cbutton role=\"tab\" id=\"t7\" aria-controls=\"p7\">Costs\u003c/button>\n  \u003cbutton role=\"tab\" id=\"t8\" aria-controls=\"p8\">Umrah guide\u003c/button>\n\u003c/div>\u003c/nav>\n\n\u003cmain class=\"wrap\">\n\n\u003csection id=\"p1\" role=\"tabpanel\" aria-labelledby=\"t1\">\n  \u003ch2>Your route\u003c/h2>\n  \u003cp>{Recommended order and airports, and why in two sentences}\u003c/p>\n  \u003ch2>Budget split\u003c/h2>\n  \u003cdiv>\n    \u003c!-- One .bar per item: flights, hotels, transfers and train, visa, buffer. --w is its share of the total. -->\n    \u003cdiv class=\"bar\">\u003cspan>{Flights}\u003c/span>\u003ci style=\"--w:{30%}\">\u003c/i>\u003cb class=\"num\">{900 EUR}\u003c/b>\u003c/div>\n  \u003c/div>\n  \u003ch2>Winners\u003c/h2>\n  \u003cdl class=\"pairs\">\n    \u003cdt>{Flight}\u003c/dt>\u003cdd>{Winner, price, one reason}\u003c/dd>\n  \u003c/dl>\n  \u003ch2>Package or on your own?\u003c/h2>\n  \u003cp>{Verdict with the price difference and the reason}\u003c/p>\n  \u003ch2>Book in this order\u003c/h2>\n  \u003col class=\"steps\">\n    \u003cli>\u003cdiv>\u003cb>{Step}\u003c/b>\u003cbr>{Deadline, and until when it can be cancelled}\u003c/div>\u003c/li>\n  \u003c/ol>\n\u003c/section>\n\n\u003csection id=\"p2\" role=\"tabpanel\" aria-labelledby=\"t2\" hidden>\n  \u003ch2>Visa\u003c/h2>\n  \u003col class=\"steps\">\n    \u003cli>\u003cdiv>\u003cb>{Step}\u003c/b>\u003cbr>{What to do, cost, processing time} \u003ca href=\"{official URL}\" target=\"_blank\" rel=\"noopener\">{Source}\u003c/a>\u003c/div>\u003c/li>\n  \u003c/ol>\n  \u003cp class=\"note\">{Latest date to apply, and the date the sources were checked}\u003c/p>\n  \u003ch2>Nusuk\u003c/h2>\n  \u003col class=\"steps\">\n    \u003cli>\u003cdiv>\u003cb>{Permit or booking}\u003c/b>\u003cbr>{When it opens and how to book it} \u003ca href=\"{official URL}\" target=\"_blank\" rel=\"noopener\">{Source}\u003c/a>\u003c/div>\u003c/li>\n  \u003c/ol>\n  \u003ch2>Health\u003c/h2>\n  \u003cdl class=\"info\">\n    \u003cdiv>\u003cdt>{Vaccination}\u003c/dt>\u003cdd>{Required or recommended, by when} \u003ca href=\"{official URL}\" target=\"_blank\" rel=\"noopener\">{Source}\u003c/a>\u003c/dd>\u003c/div>\n  \u003c/dl>\n\u003c/section>\n\n\u003csection id=\"p3\" role=\"tabpanel\" aria-labelledby=\"t3\" hidden>\n  \u003c!-- One heading and table per leg (outbound, return) or per return trip. -->\n  \u003ch2>{Tunis} → {Madinah}\u003c/h2>\n  \u003cp class=\"note\">{When the prices were read}\u003c/p>\n  \u003cdiv class=\"scroll\">\u003ctable>\n    \u003cthead>\u003ctr>\u003cth>Airline\u003c/th>\u003cth>Depart → arrive\u003c/th>\u003cth>Duration\u003c/th>\u003cth>Stops\u003c/th>\u003cth>Baggage\u003c/th>\u003cth>Price\u003c/th>\u003cth>\u003c/th>\u003c/tr>\u003c/thead>\n    \u003ctbody>\n      \u003c!-- One row per option, at least 3. Add class=\"pick\" to the top recommendation only. -->\n      \u003ctr class=\"pick\">\n        \u003ctd>\u003cb>{Airline}\u003c/b>\u003cbr>\u003cspan class=\"tag pick\">Top pick\u003c/span>\u003c/td>\n        \u003ctd class=\"num\">\u003cspan dir=\"ltr\">{08:40 → 15:55}\u003c/span>\u003c/td>\n        \u003ctd class=\"num\">{5 h 15}\u003c/td>\n        \u003ctd>{Direct}\u003c/td>\n        \u003ctd>{23 kg + Zamzam 5 l}\u003c/td>\n        \u003c!-- Price tag: \"live\" with site and time read, or \"est\" with the source. Below it the verification tag. -->\n        \u003ctd>\u003cspan class=\"price\">{410 EUR}\u003c/span>\u003cbr>\u003cspan class=\"tag live\">{Live · Google Flights · 14:32}\u003c/span>\u003cbr>\u003cspan class=\"tag live\">{Confirmed bookable · Google Flights · 14:40}\u003c/span>\u003c/td>\n        \u003ctd>\u003ca class=\"btn\" href=\"{real booking or search URL}\" target=\"_blank\" rel=\"noopener\">{Book}\u003c/a>\u003c/td>\n      \u003c/tr>\n    \u003c/tbody>\n  \u003c/table>\u003c/div>\n\u003c/section>\n\n\u003csection id=\"p4\" role=\"tabpanel\" aria-labelledby=\"t4\" hidden>\n  \u003ch2>Hotels in Makkah\u003c/h2>\n  \u003cdiv class=\"grid\">\n    \u003c!-- One .card per hotel. Add \"pick\" to the best one only. -->\n    \u003carticle class=\"card pick\">\n      \u003cdiv class=\"head\">\u003ch3>{Hotel name}\u003c/h3>\u003cspan class=\"score\">{8.9}\u003c/span>\u003c/div>\n      \u003cspan class=\"tag pick\">Top pick\u003c/span>\n      \u003cdiv class=\"price\">{140 EUR} \u003csmall>per night · {840 EUR} total\u003c/small>\u003c/div>\n      \u003cspan class=\"tag live\">{Live · Booking.com · 14:50}\u003c/span>\n      \u003cspan class=\"tag live\">{Confirmed bookable · Booking.com · 14:52}\u003c/span>\n      \u003cp class=\"num\">{350 m · 5 min on foot to the nearest gate}\u003c/p>\n      \u003cul class=\"pros\">\u003cli>{Strength 1}\u003c/li>\u003cli>{Strength 2}\u003c/li>\u003cli>{Strength 3}\u003c/li>\u003c/ul>\n      \u003cul class=\"cons\">\u003cli>{Weakness 1}\u003c/li>\u003cli>{Weakness 2}\u003c/li>\u003c/ul>\n      \u003cp class=\"note\">{Room type, breakfast, free cancellation until}\u003c/p>\n      \u003ca class=\"btn\" href=\"{real URL}\" target=\"_blank\" rel=\"noopener\">{Book}\u003c/a>\n    \u003c/article>\n  \u003c/div>\n  \u003ch2>Getting around Makkah\u003c/h2>\n  \u003cdl class=\"info\">\n    \u003cdiv>\u003cdt>{Airport to hotel}\u003c/dt>\u003cdd>{Options, price, duration}\u003c/dd>\u003c/div>\n  \u003c/dl>\n\u003c/section>\n\n\u003csection id=\"p5\" role=\"tabpanel\" aria-labelledby=\"t5\" hidden>\n  \u003ch2>Hotels in Madinah\u003c/h2>\n  \u003cdiv class=\"grid\">\n    \u003carticle class=\"card\">\n      \u003cdiv class=\"head\">\u003ch3>{Hotel name}\u003c/h3>\u003cspan class=\"score\">{9.0}\u003c/span>\u003c/div>\n      \u003cdiv class=\"price\">{110 EUR} \u003csmall>per night · {440 EUR} total\u003c/small>\u003c/div>\n      \u003cspan class=\"tag est\">{Estimate · Booking.com}\u003c/span>\n      \u003cspan class=\"tag est\">Not verified\u003c/span>\n      \u003cp class=\"num\">{200 m · 3 min on foot to the nearest gate}\u003c/p>\n      \u003cul class=\"pros\">\u003cli>{Strength 1}\u003c/li>\u003cli>{Strength 2}\u003c/li>\u003cli>{Strength 3}\u003c/li>\u003c/ul>\n      \u003cul class=\"cons\">\u003cli>{Weakness 1}\u003c/li>\u003cli>{Weakness 2}\u003c/li>\u003c/ul>\n      \u003cp class=\"note\">{Room type, breakfast, free cancellation until}\u003c/p>\n      \u003ca class=\"btn\" href=\"{real URL}\" target=\"_blank\" rel=\"noopener\">{Book}\u003c/a>\n    \u003c/article>\n  \u003c/div>\n  \u003ch2>Madinah ↔ Makkah\u003c/h2>\n  \u003cdiv class=\"scroll\">\u003ctable>\n    \u003cthead>\u003ctr>\u003cth>Option\u003c/th>\u003cth>Duration\u003c/th>\u003cth>Price\u003c/th>\u003cth>Booking\u003c/th>\u003cth>\u003c/th>\u003c/tr>\u003c/thead>\n    \u003ctbody>\n      \u003ctr>\u003ctd>\u003cb>{Haramain train}\u003c/b>\u003c/td>\u003ctd class=\"num\">{2 h 15}\u003c/td>\u003ctd class=\"num\">{45 EUR}\u003c/td>\u003ctd>{When sales open, station distance}\u003c/td>\u003ctd>\u003ca class=\"btn ghost\" href=\"{official URL}\" target=\"_blank\" rel=\"noopener\">{Details}\u003c/a>\u003c/td>\u003c/tr>\n    \u003c/tbody>\n  \u003c/table>\u003c/div>\n\u003c/section>\n\n\u003csection id=\"p6\" role=\"tabpanel\" aria-labelledby=\"t6\" hidden>\n  \u003ch2>Day by day\u003c/h2>\n  \u003cdiv>\n    \u003c!-- One .day per travel day. Logistics only, planned around the prayer times. -->\n    \u003cdiv class=\"day\">\n      \u003ch3>{Day 1}\u003csmall>{Wed 10 Feb}\u003c/small>\u003c/h3>\n      \u003cdl class=\"pairs\">\n        \u003cdt>Morning\u003c/dt>\u003cdd>{Plan}\u003c/dd>\n        \u003cdt>Midday\u003c/dt>\u003cdd>{Plan}\u003c/dd>\n        \u003cdt>Evening\u003c/dt>\u003cdd>{Plan}\u003c/dd>\n      \u003c/dl>\n    \u003c/div>\n  \u003c/div>\n\u003c/section>\n\n\u003csection id=\"p7\" role=\"tabpanel\" aria-labelledby=\"t7\" hidden>\n  \u003ch2>What it costs\u003c/h2>\n  \u003cdiv class=\"scroll\">\u003ctable class=\"costs\" style=\"min-width:0\">\n    \u003cthead>\u003ctr>\u003cth>Item\u003c/th>\u003cth>Price\u003c/th>\u003c/tr>\u003c/thead>\n    \u003ctbody>\n      \u003ctr>\u003ctd>{Item}\u003c/td>\u003ctd class=\"num\">{900 EUR}\u003c/td>\u003c/tr>\n    \u003c/tbody>\n  \u003c/table>\u003c/div>\n  \u003cdiv class=\"total\">\u003cspan>Total\u003c/span>\u003cspan class=\"num\">{2,840 EUR}\u003c/span>\u003c/div>\n  \u003cp class=\"note\">{Exchange rate, its source and date}\u003c/p>\n  \u003ch2>Packages compared\u003c/h2>\n  \u003cdiv class=\"scroll\">\u003ctable>\n    \u003cthead>\u003ctr>\u003cth>Agency\u003c/th>\u003cth>Included\u003c/th>\u003cth>Departure\u003c/th>\u003cth>Price\u003c/th>\u003cth>\u003c/th>\u003c/tr>\u003c/thead>\n    \u003ctbody>\n      \u003ctr>\u003ctd>\u003cb>{Agency}\u003c/b>\u003cbr>\u003cspan class=\"note\">{Licence checked where, or not confirmed}\u003c/span>\u003c/td>\u003ctd>{Flights, hotels with distance, visa, transfers}\u003c/td>\u003ctd class=\"num\">{9 Feb}\u003c/td>\u003ctd>\u003cspan class=\"price\">{3,100 EUR}\u003c/span>\u003c/td>\u003ctd>\u003ca class=\"btn ghost\" href=\"{real URL}\" target=\"_blank\" rel=\"noopener\">{Details}\u003c/a>\u003c/td>\u003c/tr>\n    \u003c/tbody>\n  \u003c/table>\u003c/div>\n  \u003ch2>Ways to save\u003c/h2>\n  \u003cul>\u003cli>{A concrete saving with the amount}\u003c/li>\u003c/ul>\n\u003c/section>\n\n\u003csection id=\"p8\" role=\"tabpanel\" aria-labelledby=\"t8\" hidden>\n  \u003ch2>Miqat and Ihram\u003c/h2>\n  \u003cp>{Which Miqat applies on this route and when to enter Ihram} \u003ca href=\"{source URL}\" target=\"_blank\" rel=\"noopener\">{Source}\u003c/a>\u003c/p>\n  \u003ch2>Umrah checklist\u003c/h2>\n  \u003col class=\"steps\">\n    \u003cli>\u003cdiv>\u003cb>{Ihram}\u003c/b>\u003cbr>{One or two practical sentences} \u003ca href=\"{source URL}\" target=\"_blank\" rel=\"noopener\">{Source}\u003c/a>\u003c/div>\u003c/li>\n  \u003c/ol>\n  \u003cp class=\"note\">{Where schools of thought differ, ask a scholar.}\u003c/p>\n  \u003ch2>Good to know\u003c/h2>\n  \u003cdl class=\"info\">\n    \u003c!-- Packing and Ihram clothing, weather, prayer times, SIM, money, 3 apps, conduct in the two mosques. -->\n    \u003cdiv>\u003cdt>{Topic}\u003c/dt>\u003cdd>{Text}\u003c/dd>\u003c/div>\n  \u003c/dl>\n\u003c/section>\n\n\u003c/main>\n\u003cscript>\nconst tabs=[...document.querySelectorAll('[role=tab]')];\nfunction show(t){tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on})}\ntabs.forEach((t,i)=>{t.onclick=()=>{show(t);t.scrollIntoView({block:'nearest',inline:'nearest'})};t.onkeydown=e=>{let d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;if(document.dir==='rtl')d=-d;const n=tabs[(i+d+tabs.length)%tabs.length];n.focus();show(n)}});\nshow(tabs[0]);\n\u003c/script>\n\u003c/body>\n\u003c/html>\n";
+
+const I18N = {
+  en: {
+    title: 'Plan your Umrah with Claude',
+    lede: 'No more hours of searching and 50 open tabs. Fill in the brief, copy the prompt, paste it into Claude. You get a full Umrah dashboard: visa and Nusuk, flights, hotels in Makkah and Madinah, day plan, costs and a checklist with sources.',
+    sTrip: 'Your Umrah', from: 'Flying from', start: 'Departure date',
+    medina: 'Nights in Madinah', makkah: 'Nights in Makkah',
+    orderLegend: 'Which city first?', oMedina: 'Madinah first', oMakkah: 'Makkah first', oAny: 'Either, Claude decides',
+    stopsLegend: 'Flights', sDirect: 'Direct only', sStops: 'Stops are fine',
+    sPeople: 'Travellers and budget', budget: 'Budget for flights and hotels',
+    sHotels: 'Hotels', distance: 'Distance to the Haram',
+    dWalk: 'Walking distance, under 500 m', dKm: 'Up to about 1 km', dShuttle: 'Further out with a shuttle',
+    room: 'Rooms', rBest: 'Best for our group', rDouble: 'Double rooms', rTriple: 'Triple rooms', rQuad: 'Quad rooms',
+    notes: 'Anything else Claude should know?', notesPh: 'My mother uses a wheelchair, no night flights',
+    sPassport: 'Passport and residence', nationality: 'Nationality', nationalityPh: 'Tunisian',
+    residence: 'Country you live in', residencePh: 'Tunisia', fromPh: 'Tunis (TUN)',
+    natHint: 'Both decide which visa you can get.',
+    cityMedina: 'Madinah', cityMakkah: 'Makkah', eitherOrder: 'either order',
+    go: 'Create prompt', navOther: 'Trip planner',
+    steps: ['Open the Claude desktop app and switch to Cowork (paid plan). Claude then reads real prices in the browser. A normal chat on claude.ai works too, with estimated prices.', 'Paste the prompt and send it.', 'Give Claude a few minutes. It researches, then hands you the dashboard.'],
+    eNationality: 'Add your nationality, the visa depends on it.', eResidence: 'Add the country you live in.',
+  },
+  ar: {
+    title: 'خطّط عمرتك مع Claude',
+    lede: 'لا مزيد من ساعات البحث و 50 تبويبًا مفتوحًا. املأ المعلومات، انسخ الـ prompt والصقه في Claude. ستحصل على لوحة معلومات (dashboard) كاملة لعمرتك: التأشيرة و Nusuk، الطيران، فنادق مكة والمدينة، برنامج الأيام، التكاليف وقائمة بالمناسك مع المصادر.',
+    sTrip: 'عمرتك', from: 'من أين تسافر؟', start: 'تاريخ الذهاب',
+    medina: 'الليالي في المدينة', makkah: 'الليالي في مكة',
+    orderLegend: 'أي مدينة أولًا؟', oMedina: 'المدينة أولًا', oMakkah: 'مكة أولًا', oAny: 'لا يهم، Claude يقرر',
+    stopsLegend: 'الطيران', sDirect: 'رحلات مباشرة فقط', sStops: 'الترانزيت مقبول',
+    sPeople: 'المسافرون والميزانية', budget: 'ميزانية الطيران والفنادق',
+    sHotels: 'الفنادق', distance: 'المسافة إلى الحرم',
+    dWalk: 'مشيًا، أقل من 500 م', dKm: 'حتى 1 كم تقريبًا', dShuttle: 'أبعد، مع حافلة نقل',
+    room: 'الغرف', rBest: 'الأنسب لمجموعتنا', rDouble: 'غرف ثنائية', rTriple: 'غرف ثلاثية', rQuad: 'غرف رباعية',
+    notes: 'هل هناك شيء آخر يجب أن يعرفه Claude؟', notesPh: 'والدتي تستخدم كرسيًا متحركًا، بدون رحلات ليلية',
+    sPassport: 'جواز السفر والإقامة', nationality: 'الجنسية', nationalityPh: 'تونسي',
+    residence: 'بلد الإقامة', residencePh: 'تونس', fromPh: 'Tunis (TUN)',
+    natHint: 'كلاهما يحدد نوع التأشيرة التي يمكنك الحصول عليها.',
+    cityMedina: 'المدينة', cityMakkah: 'مكة', eitherOrder: 'بأي ترتيب',
+    go: 'أنشئ الـ prompt', navOther: 'مخطط الرحلات',
+    steps: ['افتح تطبيق Claude على الحاسوب وانتقل إلى Cowork (اشتراك مدفوع). عندها يقرأ Claude الأسعار الحقيقية في المتصفح. المحادثة العادية على claude.ai تعمل أيضًا، لكن بأسعار تقديرية.', 'الصق الـ prompt وأرسله.', 'امنح Claude بضع دقائق. يبحث أولًا، ثم يسلّمك اللوحة.'],
+    eNationality: 'أضف جنسيتك، فالتأشيرة تعتمد عليها.', eResidence: 'أضف بلد إقامتك.',
+  },
+};
+
+const ERR_IDS = ['from', 'start', 'nationality', 'residence'];
+
+function read() {
+  syncAges();
+  const fd = new FormData(form);
+  const n = (k, lo, hi) => Math.min(hi, Math.max(lo, Math.round(+fd.get(k)) || lo));
+  return {
+    from: fd.get('from').trim(), start: fd.get('start'),
+    medina: n('medina', 0, 30), makkah: n('makkah', 1, 30), order: fd.get('order'), stops: fd.get('stops'),
+    adults: n('adults', 1, 12), ages: fd.getAll('age'),
+    budget: fd.has('nobudget') ? 0 : n('budget', 0, 1e7), currency: fd.get('currency'),
+    distance: fd.get('distance'), room: fd.get('room'), notes: fd.get('notes'),
+    nationality: fd.get('nationality').trim(), residence: fd.get('residence').trim(), lang,
+  };
+}
+
+function problems(d) {
+  const p = [];
+  if (!d.from) p.push(['from', 'eFrom']);
+  if (!d.start) p.push(['start', 'eStart']);
+  if (!d.nationality) p.push(['nationality', 'eNationality']);
+  if (!d.residence) p.push(['residence', 'eResidence']);
+  const gap = d.ages.indexOf('');
+  if (gap >= 0) p.push(['age' + (gap + 1), 'eAges']);
+  return p;
+}
+
+function brief(d) {
+  const arrow = lang === 'ar' ? ' ← ' : ' → ';
+  const med = t('cityMedina') + ' ' + d.medina, mak = t('cityMakkah') + ' ' + d.makkah;
+  const cities = !d.medina ? mak : d.order === 'makkah' ? mak + arrow + med : d.order === 'medina' ? med + arrow + mak : med + ' · ' + mak + ' · ' + t('eitherOrder');
+  setLine('bl-route', isolate(d.from || t('phFrom')) + arrow + cities, !!d.from);
+  const nights = d.medina + d.makkah;
+  const end = d.start && new Date(Date.parse(d.start + 'T00:00:00Z') + nights * 864e5).toISOString().slice(0, 10);
+  setLine('bl-dates', d.start ? shortDate(d.start) + ' – ' + shortDate(end) + ' · ' + plural(nights, 'night', 'nights') : t('phDates'), !!d.start);
+  $('#order-group').hidden = !d.medina;
+}
+
+const build = (d) => buildUmrahPrompt(TPL, DASH, d);
+
+const COMMON = {
+  en: {
+    langLegend: 'Language', curLegend: 'Currency',
+    adults: 'Adults', kids: 'Children', less: 'One less', more: 'One more',
+    ageN: 'Age of child {n}', agePick: 'Age', under1: 'Under 1', agesHint: 'Age on the day of travel. Many airlines and hotels charge by age.',
+    eAges: 'Pick an age for every child.',
+    noBudget: 'No fixed budget, find me the best value',
+    summary: 'Your brief', blRoute: 'Route', blDates: 'Dates', blWho: 'Travellers', blBudget: 'Budget',
+    phFrom: 'From', phDates: 'Pick your dates', bestValue: 'Best value',
+    night: 'night', nights: 'nights', adult: 'adult', adultsN: 'adults', child: 'child', children: 'children',
+    ready: 'Your prompt is ready', outLabel: 'Generated prompt',
+    copy: 'Copy prompt', copied: 'Copied', copyFail: 'Copying was blocked. The text is selected: press Ctrl+C or Cmd+C.',
+    chars: 'characters',
+    eFrom: 'Add the city or airport you leave from.', eStart: 'Pick your departure date.',
+    eForm: 'Some details are missing. Check the marked fields.',
+    support: 'Support this project on Ko-fi',
+    foot: 'Claude only researches. You book and pay yourself. Independent project, not affiliated with Anthropic.',
+  },
+  ar: {
+    langLegend: 'اللغة', curLegend: 'العملة',
+    adults: 'البالغون', kids: 'الأطفال', less: 'إنقاص واحد', more: 'إضافة واحد',
+    ageN: 'عمر الطفل {n}', agePick: 'العمر', under1: 'أقل من سنة', agesHint: 'العمر يوم السفر. كثير من شركات الطيران والفنادق تحدد السعر حسب العمر.',
+    eAges: 'اختر عمر كل طفل.',
+    noBudget: 'لا توجد ميزانية محددة، ابحث لي عن أفضل قيمة',
+    summary: 'ملخص رحلتك', blRoute: 'المسار', blDates: 'التواريخ', blWho: 'المسافرون', blBudget: 'الميزانية',
+    phFrom: 'من', phDates: 'اختر التواريخ', bestValue: 'أفضل قيمة',
+    night: 'ليلة', nights: 'ليالٍ', adult: 'بالغ', adultsN: 'بالغين', child: 'طفل', children: 'أطفال',
+    ready: 'الـ prompt جاهز', outLabel: 'الـ prompt',
+    copy: 'انسخ الـ prompt', copied: 'تم النسخ', copyFail: 'تعذّر النسخ تلقائيًا. النص محدد: اضغط Ctrl+C أو Cmd+C.',
+    chars: 'حرفًا',
+    eFrom: 'أضف المدينة أو المطار الذي تسافر منه.', eStart: 'اختر تاريخ الذهاب.',
+    eForm: 'بعض المعلومات ناقصة. راجع الحقول المحددة.',
+    support: 'ادعم هذا المشروع على Ko-fi',
+    foot: 'Claude يبحث فقط. الحجز والدفع عليك. مشروع مستقل، لا علاقة له بـ Anthropic.',
+  },
+};
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+const form = $('#brief'), out = $('#out');
+let lang = 'en', created = false;
+const t = (k) => I18N[lang][k] ?? COMMON[lang][k];
+const saved = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+const save = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+const plural = (n, one, many) => n + ' ' + t(n === 1 ? one : many);
+const shortDate = (iso) => new Date(iso + 'T00:00:00Z').toLocaleDateString(lang === 'ar' ? 'ar-TN-u-nu-latn' : 'en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).replace(' ', ' ');
+const isolate = (s) => '⁨' + s + '⁩';
+
+function syncAges() {
+  const box = $('#ages'), n = Math.min(12, Math.max(0, Math.round(+form.kids.value) || 0));
+  while (box.children.length > n) box.lastElementChild.remove();
+  while (box.children.length < n) {
+    const i = box.children.length + 1, f = document.createElement('div'), sel = document.createElement('select');
+    f.className = 'f';
+    f.append(Object.assign(document.createElement('label'), { htmlFor: 'age' + i }), sel);
+    Object.assign(sel, { id: 'age' + i, name: 'age' });
+    sel.setAttribute('aria-describedby', 'ages-err');
+    sel.append(new Option('', ''), ...Array.from({ length: 18 }, (_, a) => new Option(String(a), String(a))));
+    box.append(f);
+  }
+  [...box.children].forEach((f, i) => {
+    f.querySelector('label').textContent = t('ageN').replace('{n}', i + 1);
+    const o = f.querySelector('select').options;
+    o[0].text = t('agePick');
+    o[1].text = t('under1');
+  });
+  $('#ages-row').hidden = !n;
+}
+
+function whoLine(d) {
+  const ages = d.ages.filter(Boolean).map((a) => (a === '0' ? '<1' : a));
+  return plural(d.adults, 'adult', 'adultsN') + (d.ages.length ? ' · ' + plural(d.ages.length, 'child', 'children') + (ages.length ? ' (' + ages.join(', ') + ')' : '') : '');
+}
+
+function showProblems(list) {
+  for (const id of ERR_IDS) {
+    const hit = list.find((x) => x[0] === id), msg = $('#' + id + '-err');
+    $('#' + id).setAttribute('aria-invalid', !!hit);
+    msg.hidden = !hit;
+    msg.textContent = hit ? t(hit[1]) : '';
+  }
+  const ages = list.some((x) => x[1] === 'eAges');
+  $$('#ages select').forEach((s) => s.setAttribute('aria-invalid', ages && !s.value));
+  $('#ages-err').hidden = !ages;
+  $('#ages-err').textContent = ages ? t('eAges') : '';
+  $('#form-err').hidden = !list.length;
+  $('#form-err').textContent = list.length ? t('eForm') : '';
+}
+
+function setLine(id, text, set) {
+  const row = $('#' + id);
+  row.querySelector('dd').textContent = text;
+  row.classList.toggle('set', set);
+}
+
+function refresh() {
+  const d = read();
+  brief(d);
+  setLine('bl-who', whoLine(d), true);
+  setLine('bl-budget', d.budget ? d.budget.toLocaleString('en-US') + ' ' + d.currency : t('bestValue'), !!d.budget || form.nobudget.checked);
+  $('#cur').textContent = d.currency;
+  form.budget.disabled = form.nobudget.checked;
+  if (created) problems(d).length ? setCreated(false) : render(d);
+}
+
+function render(d) {
+  out.value = build(d);
+  $('#meta').textContent = out.value.length.toLocaleString('en-US') + ' ' + t('chars');
+  $('#steps').replaceChildren(...t('steps').map((s) => Object.assign(document.createElement('li'), { textContent: s })));
+}
+
+function setCreated(on) {
+  created = on;
+  on ? $('.rail').prepend($('#result')) : $('.rail').append($('#result'));
+  $('#result').hidden = !on;
+  $('#create').hidden = on;
+  $('#copy-err').hidden = true;
+}
+
+function applyLang() {
+  document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  $$('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+  $$('[data-ph]').forEach((el) => { el.placeholder = t(el.dataset.ph); });
+  $$('[data-al]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.al)); });
+  if (!$('#form-err').hidden) showProblems(problems(read()));
+  refresh();
+}
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const d = read(), list = problems(d);
+  showProblems(list);
+  if (list.length) return $('#' + list[0][0]).focus();
+  render(d);
+  setCreated(true);
+  $('#result').focus({ preventScroll: true });
+  $('.rail').scrollTop = 0;
+  $('#copy').scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth' });
+});
+
+document.addEventListener('input', (e) => {
+  if (e.target.name === 'lang') { lang = e.target.value; save('tp-lang', lang); return applyLang(); }
+  if (e.target.name === 'currency') save('tp-cur', e.target.value);
+  if (!$('#form-err').hidden) showProblems(problems(read()));
+  refresh();
+});
+$$('[data-step]').forEach((b) => b.addEventListener('click', () => {
+  const el = $('#' + b.dataset.for);
+  el.value = Math.min(+el.max, Math.max(+el.min, (+el.value || 0) + +b.dataset.step));
+  refresh();
+}));
+
+$('#copy').addEventListener('click', async () => {
+  const label = $('#copy-label'), fail = $('#copy-err');
+  let ok = false;
+  try { await navigator.clipboard.writeText(out.value); ok = true; } catch {
+    out.focus(); out.select();
+    try { ok = document.execCommand('copy'); } catch {}
+  }
+  fail.hidden = ok;
+  fail.textContent = ok ? '' : t('copyFail');
+  if (!ok) return;
+  label.textContent = t('copied');
+  $('#copy').classList.add('done');
+  setTimeout(() => { label.textContent = t('copy'); $('#copy').classList.remove('done'); }, 2200);
+});
+
+const today = new Date();
+form.start.min = new Date(today - today.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+const savedLang = saved('tp-lang') || (navigator.language || '').slice(0, 2);
+if (savedLang === 'ar') { lang = 'ar'; $('input[name=lang][value=ar]').checked = true; }
+if (saved('tp-cur') === 'TND') $('input[name=currency][value=TND]').checked = true;
+applyLang();
+
+</script>
+</body>
+</html>

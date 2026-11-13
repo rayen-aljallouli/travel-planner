@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{Destination} trip plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sea:#050B1C;--panel:#0B1730;--field:#0C1A38;--line:#1E2E57;--ink:#F3F6FC;--body:#DCE4F2;--steel:#8FA3C7;--crane:#E9C46A;--on-crane:#1A1405;--flag:#8DB4FF;
+--sans:"Tajawal","Segoe UI",Tahoma,sans-serif;--mono:"JetBrains Mono","Tajawal",ui-monospace,monospace;--out:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box}
+html{color-scheme:dark;scrollbar-color:var(--line) transparent}
+body{margin:0;min-height:100vh;color:var(--body);font:500 1.0625rem/1.65 var(--sans);
+background-color:#050B1C;background-attachment:fixed;
+background-image:radial-gradient(60rem 34rem at 100% -8%,rgba(45,107,255,.3),transparent 70%),linear-gradient(#081636,#050B1C 42%,#02050D)}
+[dir=rtl] body{background-image:radial-gradient(60rem 34rem at 0 -8%,rgba(45,107,255,.3),transparent 70%),linear-gradient(#081636,#050B1C 42%,#02050D)}
+::selection{background:var(--crane);color:var(--on-crane)}
+:focus-visible{outline:2px solid var(--flag);outline-offset:3px;border-radius:6px}
+a{color:var(--flag);text-underline-offset:.2em}
+h1,h2,h3{color:var(--ink);font-weight:800;line-height:1.15;margin:0;text-wrap:balance}
+.wrap{max-width:68rem;margin-inline:auto;padding-inline:clamp(1rem,4vw,2.5rem)}
+.hero{padding-block:clamp(2.5rem,8vw,5rem) clamp(1.5rem,4vw,2.5rem)}
+.hero h1{font-size:clamp(2.75rem,10vw,5.75rem);letter-spacing:-.02em}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0;padding:0;list-style:none;font:500 .875rem/1.4 var(--mono)}
+.facts li{border:1px solid var(--line);border-radius:99px;padding:.4em 1em;color:var(--steel)}
+.facts li:first-child{color:var(--crane);border-color:rgba(233,196,106,.5)}
+.tabs{position:sticky;top:0;z-index:2;background:var(--sea);border-block:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:none;appearance:none;background:none;border:0;border-bottom:3px solid transparent;color:var(--steel);font:700 1rem var(--sans);padding:1rem .9rem .8rem;cursor:pointer;transition:color .2s,border-color .2s}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected=true]{color:var(--crane);border-bottom-color:var(--crane)}
+main{padding-block:clamp(1.75rem,5vw,3rem) 5rem}
+section{animation:fade .35s ease-out both}
+@keyframes fade{from{opacity:0}}
+h2{font-size:clamp(1.5rem,4vw,2rem);margin:2.75rem 0 1rem}
+section>h2:first-child{margin-top:0}
+h3{font-size:1.2rem}
+p{margin:0 0 1rem;max-width:70ch}
+.note{color:var(--steel);font-size:.95rem}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{display:grid;grid-template-columns:8.5rem 1fr auto;gap:1rem;align-items:center;margin:.75rem 0}
+.bar i{height:.75rem;border-radius:99px;background:var(--field);overflow:hidden}
+.bar i::after{content:"";display:block;height:100%;width:var(--w);background:var(--crane);border-radius:inherit;animation:grow .9s var(--out) .2s both}
+@keyframes grow{from{width:0}}
+.pairs{display:grid;grid-template-columns:minmax(7rem,auto) 1fr;gap:.6rem 1.5rem;margin:0}
+.pairs dt{color:var(--steel)}
+.pairs dd{margin:0;color:var(--ink)}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2.25rem 1fr;padding:.8rem 0;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s);font:700 1rem/1.7 var(--mono);color:var(--crane)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;min-width:44rem}
+th,td{text-align:start;padding:.9rem 1rem;vertical-align:top}
+th{color:var(--steel);font-size:.95rem;font-weight:700;border-bottom:1px solid var(--line)}
+tr+tr td{border-top:1px solid var(--line)}
+tr.pick td{background:rgba(233,196,106,.07)}
+.costs td:last-child,.costs th:last-child{text-align:end}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,18rem),1fr));gap:1.1rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:1.35rem;display:flex;flex-direction:column;gap:.7rem;transition:border-color .3s}
+.card:hover{border-color:#566BA3}
+.card.pick{border-color:var(--crane)}
+.card p,.card ul{margin:0}
+.card .btn{margin-top:auto;align-self:start}
+.card>.tag{align-self:start}
+.head{display:flex;justify-content:space-between;align-items:start;gap:.75rem}
+.price{font:700 1.3rem var(--mono);color:var(--ink)}
+.price small{font:500 .85rem var(--sans);color:var(--steel)}
+.score{flex:none;font:700 .85rem var(--mono);background:var(--field);color:var(--ink);border:1px solid #566BA3;border-radius:8px;padding:.2em .55em}
+.score::before{content:"";display:inline-block;width:.85em;height:.85em;margin-inline-end:.4em;vertical-align:-.08em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z'/%3E%3C/svg%3E") center/contain no-repeat}
+main ul:not([class]) li::marker{color:var(--crane)}
+.tag{display:inline-block;font:700 .8rem var(--sans);border-radius:99px;padding:.15em .7em;border:1px solid var(--line);color:var(--steel)}
+.tag.pick,.tag.must{background:var(--crane);border-color:var(--crane);color:var(--on-crane)}
+.tag.live{border-color:var(--flag);color:var(--flag)}
+.tag.est{border-style:dashed}
+.pros,.cons{padding-inline-start:1.2rem}
+.pros li::marker{content:"+  ";color:var(--crane);font-family:var(--mono)}
+.cons li::marker{content:"−  ";color:var(--steel);font-family:var(--mono)}
+.btn{display:inline-block;background:var(--crane);color:var(--on-crane);font-weight:800;text-decoration:none;border-radius:12px;padding:.6em 1.15em;transition:transform .25s var(--out),box-shadow .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px -8px rgba(0,0,0,.65)}
+.btn.ghost{background:none;color:var(--crane);box-shadow:inset 0 0 0 1px var(--crane)}
+.gem{margin-top:1.5rem;border:1px dashed var(--crane);border-radius:18px;padding:1.5rem;background:rgba(233,196,106,.06)}
+.gem h3{margin-bottom:.5rem}
+.day{display:grid;grid-template-columns:10rem 1fr;gap:1.5rem;padding:1.5rem 0;border-top:1px solid var(--line)}
+.day h3 small{display:block;font:500 .85rem var(--mono);color:var(--steel);margin-top:.3rem}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-top:1.25rem;padding-top:1rem;border-top:2px solid var(--crane);color:var(--ink);font-weight:800;font-size:clamp(1.6rem,5vw,2.6rem)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1.75rem 2.5rem;margin:0}
+.info dt{color:var(--crane);font-weight:700;margin-bottom:.25rem}
+.info dd{margin:0}
+@media (max-width:40rem){.day{grid-template-columns:1fr;gap:.5rem}.bar{grid-template-columns:6.5rem 1fr auto;gap:.6rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<!-- Arabic version: set lang="ar" dir="rtl" on <html> and translate every label. -->
+<header class="hero wrap">
+  <h1>{Destination}</h1>
+  <ul class="facts">
+    <li>{12 – 19 Mar 2027 · 7 nights}</li>
+    <li>{2 adults}</li>
+    <li>{Budget 1,800 EUR}</li>
+    <li>{Beach &amp; relax}</li>
+  </ul>
+</header>
+
+<nav class="tabs"><div class="wrap" role="tablist">
+  <button role="tab" id="t1" aria-controls="p1">Overview</button>
+  <button role="tab" id="t2" aria-controls="p2">Flights</button>
+  <button role="tab" id="t3" aria-controls="p3">Stay</button>
+  <button role="tab" id="t4" aria-controls="p4">Experiences</button>
+  <button role="tab" id="t5" aria-controls="p5">Day plan</button>
+  <button role="tab" id="t6" aria-controls="p6">Costs</button>
+  <button role="tab" id="t7" aria-controls="p7">Insider</button>
+</div></nav>
+
+<main class="wrap">
+
+<section id="p1" role="tabpanel" aria-labelledby="t1">
+  <h2>Budget split</h2>
+  <div>
+    <!-- One .bar per item: flights, accommodation, experiences, buffer. --w is its share of the total. -->
+    <div class="bar"><span>{Flights}</span><i style="--w:{38%}"></i><b class="num">{680 EUR}</b></div>
+  </div>
+  <h2>Highlights</h2>
+  <ul><li>{One highlight of this trip}</li></ul>
+  <h2>Winners</h2>
+  <dl class="pairs">
+    <dt>{Flight}</dt><dd>{Winner, price, one reason}</dd>
+  </dl>
+  <h2>Book in this order</h2>
+  <ol class="steps">
+    <li><div><b>{Step}</b><br>{Deadline, and until when it can be cancelled}</div></li>
+  </ol>
+</section>
+
+<section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+  <h2>{Departure} – {Destination}</h2>
+  <p class="note">{Cheapest day in the ±3 day window, and when the prices were read}</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Airline</th><th>Depart → arrive</th><th>Duration</th><th>Stops</th><th>Price</th><th></th></tr></thead>
+    <tbody>
+      <!-- One row per option, at least 3. Add class="pick" to the top recommendation only. -->
+      <tr class="pick">
+        <td><b>{Airline}</b><br><span class="tag pick">Top pick</span></td>
+        <td class="num"><span dir="ltr">{08:40 → 12:55}</span></td>
+        <td class="num">{3 h 15}</td>
+        <td>{Direct}</td>
+        <!-- Use tag "live" with site and time read, or tag "est" with the source. Never both. -->
+        <td><span class="price">{187 EUR}</span><br><span class="tag live">{Live · Google Flights · 14:32}</span></td>
+        <td><a class="btn" href="{real booking or search URL}" target="_blank" rel="noopener">{Book}</a></td>
+      </tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
+  <h2>Where to stay</h2>
+  <div class="grid">
+    <!-- One .card per place. Add "pick" to the best one only. -->
+    <article class="card pick">
+      <div class="head"><h3>{Place name}</h3><span class="score">{9.2}</span></div>
+      <span class="tag pick">Top pick</span>
+      <div class="price">{95 EUR} <small>per night · {665 EUR} total</small></div>
+      <span class="tag est">{Estimate · Booking.com}</span>
+      <p>{Location: distance to the hotspots}</p>
+      <ul class="pros"><li>{Strength 1}</li><li>{Strength 2}</li><li>{Strength 3}</li></ul>
+      <ul class="cons"><li>{Weakness 1}</li><li>{Weakness 2}</li></ul>
+      <p class="note">{Free cancellation until 5 Mar}</p>
+      <a class="btn" href="{real URL}" target="_blank" rel="noopener">{Book}</a>
+    </article>
+  </div>
+</section>
+
+<section id="p4" role="tabpanel" aria-labelledby="t4" hidden>
+  <h2>What to do</h2>
+  <div class="grid">
+    <!-- 5 cards. Label class is "must" or plain for Nice-to-have. -->
+    <article class="card">
+      <div class="head"><h3>{Experience}</h3><span class="score">{4.8}</span></div>
+      <span class="tag must">Must-do</span>
+      <p>{Short description}</p>
+      <p class="num">{35 EUR · 3 h}</p>
+      <a class="btn ghost" href="{real URL}" target="_blank" rel="noopener">{Details}</a>
+    </article>
+  </div>
+  <aside class="gem">
+    <h3>Hidden gem: {name}</h3>
+    <p>{Why it is worth it, and where the tip comes from}</p>
+  </aside>
+</section>
+
+<section id="p5" role="tabpanel" aria-labelledby="t5" hidden>
+  <h2>Day by day</h2>
+  <div>
+    <!-- One .day per travel day. -->
+    <div class="day">
+      <h3>{Day 1}<small>{Fri 12 Mar}</small></h3>
+      <dl class="pairs">
+        <dt>Morning</dt><dd>{Plan}</dd>
+        <dt>Midday</dt><dd>{Plan}</dd>
+        <dt>Evening</dt><dd>{Plan}</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="p6" role="tabpanel" aria-labelledby="t6" hidden>
+  <h2>What it costs</h2>
+  <div class="scroll"><table class="costs" style="min-width:0">
+    <thead><tr><th>Item</th><th>Price</th></tr></thead>
+    <tbody>
+      <tr><td>{Item}</td><td class="num">{680 EUR}</td></tr>
+    </tbody>
+  </table></div>
+  <div class="total"><span>Total</span><span class="num">{1,740 EUR}</span></div>
+  <p class="note">{Exchange rate, its source and date}</p>
+  <h2>Ways to save</h2>
+  <ul><li>{Fly Tuesday instead of Friday: saves 60 EUR}</li></ul>
+</section>
+
+<section id="p7" role="tabpanel" aria-labelledby="t7" hidden>
+  <h2>Good to know</h2>
+  <dl class="info">
+    <!-- Currency, language and phrases, tipping, climate, safety, do's and don'ts, 3 apps, entry and visa. -->
+    <div><dt>{Topic}</dt><dd>{Text}</dd></div>
+  </dl>
+</section>
+
+</main>
+<script>
+const tabs=[...document.querySelectorAll('[role=tab]')];
+function show(t){tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on})}
+tabs.forEach((t,i)=>{t.onclick=()=>{show(t);t.scrollIntoView({block:'nearest',inline:'nearest'})};t.onkeydown=e=>{let d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;if(document.dir==='rtl')d=-d;const n=tabs[(i+d+tabs.length)%tabs.length];n.focus();show(n)}});
+show(tabs[0]);
+</script>
+</body>
+</html>

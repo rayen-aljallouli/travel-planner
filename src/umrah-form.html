@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Umrah Planner for Claude</title>
+<meta name="description" content="Fill in your Umrah, copy the prompt, paste it into Claude and get a full Umrah dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="top">
+  <div>
+    <h1 data-t="title">Plan your Umrah with Claude</h1>
+    <p class="lede" data-t="lede">No more hours of searching and 50 open tabs. Fill in the brief, copy the prompt, paste it into Claude. You get a full Umrah dashboard: visa and Nusuk, flights, hotels in Makkah and Madinah, day plan, costs and a checklist with sources.</p>
+  </div>
+  <div class="switches">
+    <fieldset class="seg">
+      <legend class="sr" data-t="langLegend">Language</legend>
+      <label><input type="radio" name="lang" value="en" form="brief" checked><span>English</span></label>
+      <label><input type="radio" name="lang" value="ar" form="brief"><span lang="ar">العربية</span></label>
+    </fieldset>
+    <fieldset class="seg">
+      <legend class="sr" data-t="curLegend">Currency</legend>
+      <label><input type="radio" name="currency" value="EUR" form="brief" checked><span>EUR</span></label>
+      <label><input type="radio" name="currency" value="TND" form="brief"><span>TND</span></label>
+    </fieldset>
+  </div>
+</header>
+
+<form id="brief" novalidate>
+  <div>
+    <section>
+      <h2 data-t="sTrip">Your Umrah</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="from" data-t="from">Flying from</label>
+          <input type="text" id="from" name="from" autocomplete="off" maxlength="80" data-ph="fromPh" placeholder="Tunis (TUN)" aria-describedby="from-err">
+          <p class="err" id="from-err" hidden></p>
+        </div>
+        <div class="f">
+          <label for="start" data-t="start">Departure date</label>
+          <input type="date" id="start" name="start" aria-describedby="start-err">
+          <p class="err" id="start-err" hidden></p>
+        </div>
+      </div>
+      <div class="row two">
+        <div class="f">
+          <label for="medina" data-t="medina">Nights in Madinah</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="medina" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="medina" name="medina" min="0" max="30" value="4" inputmode="numeric">
+            <button type="button" data-step="1" data-for="medina" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+        <div class="f">
+          <label for="makkah" data-t="makkah">Nights in Makkah</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="makkah" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="makkah" name="makkah" min="1" max="30" value="5" inputmode="numeric">
+            <button type="button" data-step="1" data-for="makkah" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <fieldset class="group" id="order-group">
+        <legend data-t="orderLegend">Which city first?</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="order" value="medina"><span data-t="oMedina">Madinah first</span></label>
+          <label class="chip"><input type="radio" name="order" value="makkah"><span data-t="oMakkah">Makkah first</span></label>
+          <label class="chip"><input type="radio" name="order" value="any" checked><span data-t="oAny">Either, Claude decides</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="group">
+        <legend data-t="stopsLegend">Flights</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="stops" value="direct"><span data-t="sDirect">Direct only</span></label>
+          <label class="chip"><input type="radio" name="stops" value="stops" checked><span data-t="sStops">Stops are fine</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <section>
+      <h2 data-t="sPeople">Travellers and budget</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="adults" data-t="adults">Adults</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="adults" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="adults" name="adults" min="1" max="12" value="2" inputmode="numeric">
+            <button type="button" data-step="1" data-for="adults" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+        <div class="f">
+          <label for="kids" data-t="kids">Children</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="kids" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="kids" name="kids" min="0" max="12" value="0" inputmode="numeric">
+            <button type="button" data-step="1" data-for="kids" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="ages-row" hidden>
+        <div class="ages" id="ages"></div>
+        <p class="hint" data-t="agesHint">Age on the day of travel. Many airlines and hotels charge by age.</p>
+        <p class="err" id="ages-err" hidden></p>
+      </div>
+      <div class="row">
+        <div class="f">
+          <label for="budget" data-t="budget">Budget for flights and hotels</label>
+          <div class="money">
+            <input type="number" id="budget" name="budget" min="0" step="50" inputmode="numeric" placeholder="3000">
+            <output id="cur">EUR</output>
+          </div>
+        </div>
+      </div>
+      <label class="check"><input type="checkbox" name="nobudget" id="nobudget"><span data-t="noBudget">No fixed budget, find me the best value</span></label>
+    </section>
+
+    <section>
+      <h2 data-t="sHotels">Hotels</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="distance" data-t="distance">Distance to the Haram</label>
+          <select id="distance" name="distance">
+            <option value="walk" data-t="dWalk">Walking distance, under 500 m</option>
+            <option value="km" data-t="dKm">Up to about 1 km</option>
+            <option value="shuttle" data-t="dShuttle">Further out with a shuttle</option>
+          </select>
+        </div>
+        <div class="f">
+          <label for="room" data-t="room">Rooms</label>
+          <select id="room" name="room">
+            <option value="best" data-t="rBest">Best for our group</option>
+            <option value="double" data-t="rDouble">Double rooms</option>
+            <option value="triple" data-t="rTriple">Triple rooms</option>
+            <option value="quad" data-t="rQuad">Quad rooms</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f">
+          <label for="notes" data-t="notes">Anything else Claude should know?</label>
+          <textarea id="notes" name="notes" rows="2" maxlength="500" data-ph="notesPh" placeholder=""></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-t="sPassport">Passport and residence</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="nationality" data-t="nationality">Nationality</label>
+          <input type="text" id="nationality" name="nationality" autocomplete="off" maxlength="60" data-ph="nationalityPh" placeholder="Tunisian" aria-describedby="nationality-err">
+          <p class="err" id="nationality-err" hidden></p>
+        </div>
+        <div class="f">
+          <label for="residence" data-t="residence">Country you live in</label>
+          <input type="text" id="residence" name="residence" autocomplete="off" maxlength="60" data-ph="residencePh" placeholder="Tunisia" aria-describedby="residence-err">
+          <p class="err" id="residence-err" hidden></p>
+        </div>
+      </div>
+      <p class="hint" data-t="natHint">Both decide which visa you can get.</p>
+    </section>
+  </div>
+
+  <aside class="rail">
+    <h2 class="sr" data-t="summary">Your brief</h2>
+    <dl class="bl">
+      <div id="bl-route"><dt data-t="blRoute">Route</dt><dd></dd></div>
+      <div id="bl-dates"><dt data-t="blDates">Dates</dt><dd></dd></div>
+      <div id="bl-who"><dt data-t="blWho">Travellers</dt><dd></dd></div>
+      <div id="bl-budget"><dt data-t="blBudget">Budget</dt><dd></dd></div>
+    </dl>
+
+    <button type="submit" class="go" id="create"><span data-t="go">Create prompt</span><svg class="dir" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <p class="err" id="form-err" role="alert" hidden></p>
+
+    <div class="result" id="result" tabindex="-1" hidden>
+      <h2 data-t="ready">Your prompt is ready</h2>
+      <textarea id="out" readonly dir="ltr" lang="en" data-al="outLabel" aria-label="Generated prompt"></textarea>
+      <p class="meta" id="meta"></p>
+      <button type="button" class="go" id="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><span id="copy-label" data-t="copy">Copy prompt</span></button>
+      <p class="err" id="copy-err" role="alert" hidden></p>
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </aside>
+</form>
+
+<footer>
+  <span data-t="foot">Claude only researches. You book and pay yourself. Independent project, not affiliated with Anthropic.</span>
+  <a href="index.html" data-t="navOther">Trip planner</a>
+  <a href="https://ko-fi.com/rayen_aljallouli" target="_blank" rel="noopener" data-t="support">Support this project on Ko-fi</a>
+  <a href="https://www.instagram.com/rayen.aljallouli/" target="_blank" rel="noopener" dir="ltr">@rayen.aljallouli</a>
+</footer>
+</div>
+
+<script>
+/*__PROMPT_JS__*/
+const TPL = "__TPL__", DASH = "__DASH__";
+
+const I18N = {
+  en: {
+    title: 'Plan your Umrah with Claude',
+    lede: 'No more hours of searching and 50 open tabs. Fill in the brief, copy the prompt, paste it into Claude. You get a full Umrah dashboard: visa and Nusuk, flights, hotels in Makkah and Madinah, day plan, costs and a checklist with sources.',
+    sTrip: 'Your Umrah', from: 'Flying from', start: 'Departure date',
+    medina: 'Nights in Madinah', makkah: 'Nights in Makkah',
+    orderLegend: 'Which city first?', oMedina: 'Madinah first', oMakkah: 'Makkah first', oAny: 'Either, Claude decides',
+    stopsLegend: 'Flights', sDirect: 'Direct only', sStops: 'Stops are fine',
+    sPeople: 'Travellers and budget', budget: 'Budget for flights and hotels',
+    sHotels: 'Hotels', distance: 'Distance to the Haram',
+    dWalk: 'Walking distance, under 500 m', dKm: 'Up to about 1 km', dShuttle: 'Further out with a shuttle',
+    room: 'Rooms', rBest: 'Best for our group', rDouble: 'Double rooms', rTriple: 'Triple rooms', rQuad: 'Quad rooms',
+    notes: 'Anything else Claude should know?', notesPh: 'My mother uses a wheelchair, no night flights',
+    sPassport: 'Passport and residence', nationality: 'Nationality', nationalityPh: 'Tunisian',
+    residence: 'Country you live in', residencePh: 'Tunisia', fromPh: 'Tunis (TUN)',
+    natHint: 'Both decide which visa you can get.',
+    cityMedina: 'Madinah', cityMakkah: 'Makkah', eitherOrder: 'either order',
+    go: 'Create prompt', navOther: 'Trip planner',
+    steps: ['Open the Claude desktop app and switch to Cowork (paid plan). Claude then reads real prices in the browser. A normal chat on claude.ai works too, with estimated prices.', 'Paste the prompt and send it.', 'Give Claude a few minutes. It researches, then hands you the dashboard.'],
+    eNationality: 'Add your nationality, the visa depends on it.', eResidence: 'Add the country you live in.',
+  },
+  ar: {
+    title: 'خطّط عمرتك مع Claude',
+    lede: 'لا مزيد من ساعات البحث و 50 تبويبًا مفتوحًا. املأ المعلومات، انسخ الـ prompt والصقه في Claude. ستحصل على لوحة معلومات (dashboard) كاملة لعمرتك: التأشيرة و Nusuk، الطيران، فنادق مكة والمدينة، برنامج الأيام، التكاليف وقائمة بالمناسك مع المصادر.',
+    sTrip: 'عمرتك', from: 'من أين تسافر؟', start: 'تاريخ الذهاب',
+    medina: 'الليالي في المدينة', makkah: 'الليالي في مكة',
+    orderLegend: 'أي مدينة أولًا؟', oMedina: 'المدينة أولًا', oMakkah: 'مكة أولًا', oAny: 'لا يهم، Claude يقرر',
+    stopsLegend: 'الطيران', sDirect: 'رحلات مباشرة فقط', sStops: 'الترانزيت مقبول',
+    sPeople: 'المسافرون والميزانية', budget: 'ميزانية الطيران والفنادق',
+    sHotels: 'الفنادق', distance: 'المسافة إلى الحرم',
+    dWalk: 'مشيًا، أقل من 500 م', dKm: 'حتى 1 كم تقريبًا', dShuttle: 'أبعد، مع حافلة نقل',
+    room: 'الغرف', rBest: 'الأنسب لمجموعتنا', rDouble: 'غرف ثنائية', rTriple: 'غرف ثلاثية', rQuad: 'غرف رباعية',
+    notes: 'هل هناك شيء آخر يجب أن يعرفه Claude؟', notesPh: 'والدتي تستخدم كرسيًا متحركًا، بدون رحلات ليلية',
+    sPassport: 'جواز السفر والإقامة', nationality: 'الجنسية', nationalityPh: 'تونسي',
+    residence: 'بلد الإقامة', residencePh: 'تونس', fromPh: 'Tunis (TUN)',
+    natHint: 'كلاهما يحدد نوع التأشيرة التي يمكنك الحصول عليها.',
+    cityMedina: 'المدينة', cityMakkah: 'مكة', eitherOrder: 'بأي ترتيب',
+    go: 'أنشئ الـ prompt', navOther: 'مخطط الرحلات',
+    steps: ['افتح تطبيق Claude على الحاسوب وانتقل إلى Cowork (اشتراك مدفوع). عندها يقرأ Claude الأسعار الحقيقية في المتصفح. المحادثة العادية على claude.ai تعمل أيضًا، لكن بأسعار تقديرية.', 'الصق الـ prompt وأرسله.', 'امنح Claude بضع دقائق. يبحث أولًا، ثم يسلّمك اللوحة.'],
+    eNationality: 'أضف جنسيتك، فالتأشيرة تعتمد عليها.', eResidence: 'أضف بلد إقامتك.',
+  },
+};
+
+const ERR_IDS = ['from', 'start', 'nationality', 'residence'];
+
+function read() {
+  syncAges();
+  const fd = new FormData(form);
+  const n = (k, lo, hi) => Math.min(hi, Math.max(lo, Math.round(+fd.get(k)) || lo));
+  return {
+    from: fd.get('from').trim(), start: fd.get('start'),
+    medina: n('medina', 0, 30), makkah: n('makkah', 1, 30), order: fd.get('order'), stops: fd.get('stops'),
+    adults: n('adults', 1, 12), ages: fd.getAll('age'),
+    budget: fd.has('nobudget') ? 0 : n('budget', 0, 1e7), currency: fd.get('currency'),
+    distance: fd.get('distance'), room: fd.get('room'), notes: fd.get('notes'),
+    nationality: fd.get('nationality').trim(), residence: fd.get('residence').trim(), lang,
+  };
+}
+
+function problems(d) {
+  const p = [];
+  if (!d.from) p.push(['from', 'eFrom']);
+  if (!d.start) p.push(['start', 'eStart']);
+  if (!d.nationality) p.push(['nationality', 'eNationality']);
+  if (!d.residence) p.push(['residence', 'eResidence']);
+  const gap = d.ages.indexOf('');
+  if (gap >= 0) p.push(['age' + (gap + 1), 'eAges']);
+  return p;
+}
+
+function brief(d) {
+  const arrow = lang === 'ar' ? ' ← ' : ' → ';
+  const med = t('cityMedina') + ' ' + d.medina, mak = t('cityMakkah') + ' ' + d.makkah;
+  const cities = !d.medina ? mak : d.order === 'makkah' ? mak + arrow + med : d.order === 'medina' ? med + arrow + mak : med + ' · ' + mak + ' · ' + t('eitherOrder');
+  setLine('bl-route', isolate(d.from || t('phFrom')) + arrow + cities, !!d.from);
+  const nights = d.medina + d.makkah;
+  const end = d.start && new Date(Date.parse(d.start + 'T00:00:00Z') + nights * 864e5).toISOString().slice(0, 10);
+  setLine('bl-dates', d.start ? shortDate(d.start) + ' – ' + shortDate(end) + ' · ' + plural(nights, 'night', 'nights') : t('phDates'), !!d.start);
+  $('#order-group').hidden = !d.medina;
+}
+
+const build = (d) => buildUmrahPrompt(TPL, DASH, d);
+
+/*__CORE_JS__*/
+</script>
+</body>
+</html>

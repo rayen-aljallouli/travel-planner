@@ -1,0 +1,27 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "src/dashboard.html"
+        ],
+        "createdAt": "2026-11-12T13:11:01.856Z",
+        "reason": "agent: false positive, .scroll wraps a table whose cells carry 0.9rem 1rem padding"
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "src/form.html",
+          "src/umrah-form.html"
+        ],
+        "createdAt": "2026-11-13T14:36:18.034Z",
+        "reason": "agent: false positive, the source forms hold only a /*__CSS__*/ placeholder; styles live in src/form.css (h1 up to 3.4rem, h2 1.45rem over 1.0625rem body) and are injected by build.py"
+      }
+    ]
+  }
+}

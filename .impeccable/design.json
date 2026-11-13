@@ -1,0 +1,492 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-12T13:26:48+00:00",
+  "title": "Design System: Trip Planner for Claude",
+  "extensions": {
+    "colorMeta": {
+      "crane": {
+        "role": "primary",
+        "displayName": "Crane Yellow",
+        "canonical": "oklch(83.4% 0.117 87)",
+        "tonalRamp": [
+          "oklch(15% 0.053 87)",
+          "oklch(26% 0.071 87)",
+          "oklch(38% 0.09 87)",
+          "oklch(50% 0.109 87)",
+          "oklch(62% 0.106 87)",
+          "oklch(74% 0.087 87)",
+          "oklch(85% 0.069 87)",
+          "oklch(95% 0.053 87)"
+        ]
+      },
+      "on-crane": {
+        "role": "primary",
+        "displayName": "On-Crane",
+        "canonical": "oklch(19.4% 0.029 89)",
+        "tonalRamp": [
+          "oklch(15% 0.013 89)",
+          "oklch(26% 0.018 89)",
+          "oklch(38% 0.022 89)",
+          "oklch(50% 0.027 89)",
+          "oklch(62% 0.026 89)",
+          "oklch(74% 0.022 89)",
+          "oklch(85% 0.017 89)",
+          "oklch(95% 0.013 89)"
+        ]
+      },
+      "flag": {
+        "role": "secondary",
+        "displayName": "Flag Blue",
+        "canonical": "oklch(77.1% 0.116 263)",
+        "tonalRamp": [
+          "oklch(15% 0.053 263)",
+          "oklch(26% 0.07 263)",
+          "oklch(38% 0.089 263)",
+          "oklch(50% 0.108 263)",
+          "oklch(62% 0.105 263)",
+          "oklch(74% 0.086 263)",
+          "oklch(85% 0.069 263)",
+          "oklch(95% 0.053 263)"
+        ]
+      },
+      "sea": {
+        "role": "neutral",
+        "displayName": "Night Sea",
+        "canonical": "oklch(15.4% 0.038 265)",
+        "tonalRamp": [
+          "oklch(15% 0.017 265)",
+          "oklch(26% 0.023 265)",
+          "oklch(38% 0.029 265)",
+          "oklch(50% 0.035 265)",
+          "oklch(62% 0.034 265)",
+          "oklch(74% 0.028 265)",
+          "oklch(85% 0.022 265)",
+          "oklch(95% 0.017 265)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panel Navy",
+        "canonical": "oklch(20.9% 0.053 263)",
+        "tonalRamp": [
+          "oklch(15% 0.024 263)",
+          "oklch(26% 0.032 263)",
+          "oklch(38% 0.04 263)",
+          "oklch(50% 0.049 263)",
+          "oklch(62% 0.048 263)",
+          "oklch(74% 0.039 263)",
+          "oklch(85% 0.031 263)",
+          "oklch(95% 0.024 263)"
+        ]
+      },
+      "field": {
+        "role": "neutral",
+        "displayName": "Field Navy",
+        "canonical": "oklch(22.5% 0.061 263)",
+        "tonalRamp": [
+          "oklch(15% 0.028 263)",
+          "oklch(26% 0.037 263)",
+          "oklch(38% 0.047 263)",
+          "oklch(50% 0.057 263)",
+          "oklch(62% 0.056 263)",
+          "oklch(74% 0.046 263)",
+          "oklch(85% 0.036 263)",
+          "oklch(95% 0.028 263)"
+        ]
+      },
+      "selected-fill": {
+        "role": "neutral",
+        "displayName": "Selected Fill",
+        "canonical": "oklch(35.1% 0.108 265)",
+        "tonalRamp": [
+          "oklch(15% 0.049 265)",
+          "oklch(26% 0.065 265)",
+          "oklch(38% 0.083 265)",
+          "oklch(50% 0.1 265)",
+          "oklch(62% 0.097 265)",
+          "oklch(74% 0.08 265)",
+          "oklch(85% 0.064 265)",
+          "oklch(95% 0.049 265)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "oklch(31.1% 0.077 266)",
+        "tonalRamp": [
+          "oklch(15% 0.035 266)",
+          "oklch(26% 0.046 266)",
+          "oklch(38% 0.059 266)",
+          "oklch(50% 0.071 266)",
+          "oklch(62% 0.069 266)",
+          "oklch(74% 0.057 266)",
+          "oklch(85% 0.045 266)",
+          "oklch(95% 0.035 266)"
+        ]
+      },
+      "line-hi": {
+        "role": "neutral",
+        "displayName": "Line High",
+        "canonical": "oklch(41.6% 0.094 266)",
+        "tonalRamp": [
+          "oklch(15% 0.043 266)",
+          "oklch(26% 0.057 266)",
+          "oklch(38% 0.072 266)",
+          "oklch(50% 0.088 266)",
+          "oklch(62% 0.085 266)",
+          "oklch(74% 0.07 266)",
+          "oklch(85% 0.056 266)",
+          "oklch(95% 0.043 266)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(97.3% 0.009 265)",
+        "tonalRamp": [
+          "oklch(15% 0.009 265)",
+          "oklch(26% 0.012 265)",
+          "oklch(38% 0.015 265)",
+          "oklch(50% 0.019 265)",
+          "oklch(62% 0.018 265)",
+          "oklch(74% 0.015 265)",
+          "oklch(85% 0.012 265)",
+          "oklch(95% 0.009 265)"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Body",
+        "canonical": "oklch(91.7% 0.021 262)",
+        "tonalRamp": [
+          "oklch(15% 0.01 262)",
+          "oklch(26% 0.013 262)",
+          "oklch(38% 0.016 262)",
+          "oklch(50% 0.019 262)",
+          "oklch(62% 0.019 262)",
+          "oklch(74% 0.016 262)",
+          "oklch(85% 0.012 262)",
+          "oklch(95% 0.01 262)"
+        ]
+      },
+      "steel": {
+        "role": "neutral",
+        "displayName": "Steel",
+        "canonical": "oklch(71.3% 0.057 262)",
+        "tonalRamp": [
+          "oklch(15% 0.026 262)",
+          "oklch(26% 0.035 262)",
+          "oklch(38% 0.044 262)",
+          "oklch(50% 0.054 262)",
+          "oklch(62% 0.052 262)",
+          "oklch(74% 0.043 262)",
+          "oklch(85% 0.034 262)",
+          "oklch(95% 0.026 262)"
+        ]
+      },
+      "dim": {
+        "role": "neutral",
+        "displayName": "Dim",
+        "canonical": "oklch(65.3% 0.066 264)",
+        "tonalRamp": [
+          "oklch(15% 0.03 264)",
+          "oklch(26% 0.04 264)",
+          "oklch(38% 0.05 264)",
+          "oklch(50% 0.061 264)",
+          "oklch(62% 0.059 264)",
+          "oklch(74% 0.049 264)",
+          "oklch(85% 0.039 264)",
+          "oklch(95% 0.03 264)"
+        ]
+      },
+      "err": {
+        "role": "tertiary",
+        "displayName": "Error Coral",
+        "canonical": "oklch(78.8% 0.123 30)",
+        "tonalRamp": [
+          "oklch(15% 0.056 30)",
+          "oklch(26% 0.074 30)",
+          "oklch(38% 0.095 30)",
+          "oklch(50% 0.115 30)",
+          "oklch(62% 0.111 30)",
+          "oklch(74% 0.091 30)",
+          "oklch(85% 0.073 30)",
+          "oklch(95% 0.056 30)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The dashboard's destination name only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The form's page title."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headings on both surfaces."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Card names, day names, the hidden-gem heading."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text; paragraphs cap at 70ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels, legends, chip, segment and tab text."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "Hints, notes and footer text in steel."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Brief-line values and other trip data in mono."
+      },
+      "data-strong": {
+        "displayName": "Data Strong",
+        "purpose": "Prices."
+      },
+      "data-small": {
+        "displayName": "Data Small",
+        "purpose": "Score badge, currency suffix, step numbers."
+      }
+    },
+    "shadows": [
+      {
+        "name": "lift",
+        "value": "0 12px 24px -10px rgba(0,0,0,.7)",
+        "purpose": "Under the yellow primary button on hover, with a 2px rise. Nothing has a shadow at rest."
+      },
+      {
+        "name": "lift-link",
+        "value": "0 10px 22px -8px rgba(0,0,0,.65)",
+        "purpose": "The dashboard link button's smaller copy of the hover lift."
+      }
+    ],
+    "gradients": [
+      {
+        "name": "ground",
+        "value": "radial-gradient(62rem 36rem at 100% -10%,rgba(45,107,255,.3),transparent 70%),linear-gradient(#081636,#050B1C 44%,#02050D)",
+        "purpose": "Page ground, fixed to the viewport. The radial glow moves to 0 -10% under RTL."
+      },
+      {
+        "name": "rail-wash",
+        "value": "linear-gradient(#0F2150,#0B1730 55%)",
+        "purpose": "Lighter wash at the top of the summary rail."
+      }
+    ],
+    "motion": [
+      {
+        "name": "out",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "The one easing for anything that moves: button lift, chip press, checkmark, brief-line draw, result rise, bar growth."
+      },
+      {
+        "name": "state",
+        "value": "0.2s to 0.25s",
+        "purpose": "Colour, background and border changes on hover, selection and focus."
+      },
+      {
+        "name": "brief-light",
+        "value": "color 0.4s; underline scaleX 0.7s",
+        "purpose": "A brief-line row lighting up when its fields are filled; the underline draws from the inline start."
+      },
+      {
+        "name": "rise",
+        "value": "0.7s, translateY(16px) and opacity from 0",
+        "purpose": "The result block entering the rail after the prompt is created."
+      },
+      {
+        "name": "panel-fade",
+        "value": "0.35s ease-out, opacity from 0",
+        "purpose": "A dashboard tab panel appearing."
+      },
+      {
+        "name": "bar-grow",
+        "value": "0.9s, 0.2s delay, width from 0",
+        "purpose": "Budget bars filling."
+      },
+      {
+        "name": "done-hold",
+        "value": "2200ms",
+        "purpose": "How long the copy button stays flag blue with the Copied label."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition: none",
+        "purpose": "Applied to everything under prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "field-pairs",
+        "value": "34rem"
+      },
+      {
+        "name": "dashboard-stack",
+        "value": "40rem"
+      },
+      {
+        "name": "two-column-rail",
+        "value": "62rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action of the form: create or copy the prompt. Full width at the end of the rail.",
+      "html": "<button class=\"ds-go\"><span>Create prompt</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-go{appearance:none;width:100%;min-height:3.5rem;display:flex;align-items:center;justify-content:center;gap:.6rem;border:0;border-radius:14px;background:var(--crane,#E9C46A);color:var(--on-crane,#1A1405);font:800 1.1rem \"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;cursor:pointer;transition:transform .25s cubic-bezier(.16,1,.3,1),background .2s,box-shadow .25s}.ds-go svg{width:1.1rem;height:1.1rem;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}.ds-go:hover{transform:translateY(-2px);background:#F0CF7E;box-shadow:0 12px 24px -10px rgba(0,0,0,.7)}.ds-go:active{transform:scale(.98)}.ds-go:focus-visible{outline:2px solid var(--flag,#8DB4FF);outline-offset:4px}"
+    },
+    {
+      "name": "Link Button and Ghost",
+      "kind": "button",
+      "refersTo": "button-link",
+      "description": "Dashboard booking link and its secondary ghost variant.",
+      "html": "<a class=\"ds-btn\" href=\"#\">Book</a> <a class=\"ds-btn ds-btn-ghost\" href=\"#\">Details</a>",
+      "css": ".ds-btn{display:inline-block;background:var(--crane,#E9C46A);color:var(--on-crane,#1A1405);font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;font-weight:800;text-decoration:none;border-radius:12px;padding:.6em 1.15em;transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s}.ds-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px -8px rgba(0,0,0,.65)}.ds-btn:focus-visible{outline:2px solid var(--flag,#8DB4FF);outline-offset:3px}.ds-btn-ghost{background:none;color:var(--crane,#E9C46A);box-shadow:inset 0 0 0 1px var(--crane,#E9C46A)}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Label above, field-navy input, yellow focus ring and caret.",
+      "html": "<div class=\"ds-f\"><label for=\"ds-dest\">Where to?</label><input class=\"ds-input\" id=\"ds-dest\" type=\"text\" placeholder=\"Istanbul\"></div>",
+      "css": ".ds-f{display:grid;gap:.45rem;font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;}.ds-f label{font-weight:700;color:var(--ink,#F3F6FC)}.ds-input{width:100%;min-height:3.25rem;padding:.75rem 1rem;font:500 1.05rem \"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;color:var(--ink,#F3F6FC);caret-color:var(--crane,#E9C46A);background:var(--field,#0C1A38);border:1px solid var(--line,#1E2E57);border-radius:14px;transition:border-color .2s}.ds-input::placeholder{color:var(--dim,#7C90B9);opacity:1}.ds-input:hover{border-color:var(--line-hi,#566BA3)}.ds-input:focus-visible{outline:2px solid var(--crane,#E9C46A);outline-offset:1px;border-color:var(--crane,#E9C46A)}.ds-input[aria-invalid=true]{border-color:var(--err,#FF9B8A)}"
+    },
+    {
+      "name": "Stepper",
+      "kind": "input",
+      "refersTo": "stepper",
+      "description": "Count field with minus and plus buttons in one bordered control; the number is mono.",
+      "html": "<div class=\"ds-stepper\"><button type=\"button\" aria-label=\"One less\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14\"/></svg></button><input type=\"text\" inputmode=\"numeric\" value=\"2\" aria-label=\"Adults\"><button type=\"button\" aria-label=\"One more\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M12 5v14\"/></svg></button></div>",
+      "css": ".ds-stepper{display:grid;grid-template-columns:3.25rem 1fr 3.25rem;min-height:3.25rem;border:1px solid var(--line,#1E2E57);border-radius:14px;background:var(--field,#0C1A38);overflow:hidden}.ds-stepper:focus-within{border-color:var(--crane,#E9C46A)}.ds-stepper input{border:0;background:none;text-align:center;color:var(--ink,#F3F6FC);font:500 1.05rem \"JetBrains Mono\",\"Tajawal\",ui-monospace,monospace;font-variant-numeric:tabular-nums;min-width:0}.ds-stepper input:focus-visible{outline:0}.ds-stepper button{appearance:none;border:0;background:none;color:var(--steel,#8FA3C7);cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s}.ds-stepper button:hover{background:#13244D;color:var(--ink,#F3F6FC)}.ds-stepper button:active{background:#1F3672}.ds-stepper button:focus-visible{outline:2px solid var(--flag,#8DB4FF);outline-offset:-3px}.ds-stepper svg{width:1.1rem;height:1.1rem;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round}"
+    },
+    {
+      "name": "Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Multi-select pills: dim until chosen, then lit yellow.",
+      "html": "<div class=\"ds-chips\"><label class=\"ds-chip\"><input type=\"checkbox\"><span>Beach &amp; relax</span></label><label class=\"ds-chip\"><input type=\"checkbox\" checked><span>Culture &amp; city</span></label><label class=\"ds-chip\"><input type=\"checkbox\"><span>Food</span></label></div>",
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:.55rem}.ds-chip{position:relative}.ds-chip input{position:absolute;opacity:0;inset:0;margin:0;pointer-events:none}.ds-chip span{display:block;padding:.5rem 1rem;border:1px solid var(--line,#1E2E57);border-radius:99px;background:var(--field,#0C1A38);color:var(--steel,#8FA3C7);font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;font-weight:700;cursor:pointer;user-select:none;transition:background .25s,color .25s,border-color .25s,transform .25s cubic-bezier(.16,1,.3,1)}.ds-chip span:hover{border-color:var(--line-hi,#566BA3);color:var(--ink,#F3F6FC)}.ds-chip span:active{transform:scale(.96)}.ds-chip input:checked+span{background:var(--crane,#E9C46A);border-color:var(--crane,#E9C46A);color:var(--on-crane,#1A1405)}.ds-chip input:focus-visible+span{outline:2px solid var(--flag,#8DB4FF);outline-offset:2px}"
+    },
+    {
+      "name": "Segmented Switch",
+      "kind": "custom",
+      "refersTo": "segmented",
+      "description": "Page-wide preference (language, currency). The one selection that stays navy.",
+      "html": "<div class=\"ds-seg\"><label><input type=\"radio\" name=\"ds-cur\" checked><span>EUR</span></label><label><input type=\"radio\" name=\"ds-cur\"><span>TND</span></label></div>",
+      "css": ".ds-seg{display:inline-flex;gap:2px;border:1px solid var(--line,#1E2E57);border-radius:13px;padding:3px;background:var(--field,#0C1A38);font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;}.ds-seg label{position:relative}.ds-seg input{position:absolute;opacity:0;inset:0;margin:0;pointer-events:none}.ds-seg span{display:block;padding:.4rem .9rem;border-radius:9px;font-weight:700;color:var(--steel,#8FA3C7);cursor:pointer;transition:background .2s,color .2s}.ds-seg span:hover{color:var(--ink,#F3F6FC)}.ds-seg input:checked+span{background:#1F3672;color:var(--ink,#F3F6FC)}.ds-seg input:focus-visible+span{outline:2px solid var(--flag,#8DB4FF);outline-offset:2px}"
+    },
+    {
+      "name": "Brief Line",
+      "kind": "custom",
+      "refersTo": "rail",
+      "description": "Signature: summary rows whose mono value turns yellow and underlines when the field is filled. Second row shown unfilled.",
+      "html": "<dl class=\"ds-bl\"><div class=\"ds-set\"><dt>Route</dt><dd>Tunis (TUN) → Istanbul</dd></div><div><dt>Dates</dt><dd>Pick your dates</dd></div><div class=\"ds-set\"><dt>Travellers</dt><dd>2 adults · 1 child</dd></div></dl>",
+      "css": ".ds-bl{margin:0;padding:1.5rem;background:linear-gradient(#0F2150,var(--panel,#0B1730) 55%);border:1px solid var(--line,#1E2E57);border-radius:22px;font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;}.ds-bl div{position:relative;display:grid;grid-template-columns:5.25rem 1fr;gap:.75rem;align-items:baseline;padding:.75rem 0;border-bottom:1px solid var(--line,#1E2E57)}.ds-bl div::after{content:\"\";position:absolute;inset-inline:0;bottom:-1px;height:1px;background:var(--crane,#E9C46A);transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.16,1,.3,1)}.ds-bl .ds-set::after{transform:scaleX(1)}.ds-bl dt{color:var(--steel,#8FA3C7);font-size:.92rem;font-weight:700}.ds-bl dd{margin:0;font:500 .98rem/1.45 \"JetBrains Mono\",\"Tajawal\",ui-monospace,monospace;color:var(--dim,#7C90B9);overflow-wrap:anywhere;transition:color .4s}.ds-bl .ds-set dd{color:var(--crane,#E9C46A)}"
+    },
+    {
+      "name": "Dashboard Tabs",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Sticky tab bar; selected tab is yellow with a 3px underline.",
+      "html": "<nav class=\"ds-tabs\" role=\"tablist\"><button role=\"tab\" aria-selected=\"false\">Overview</button><button role=\"tab\" aria-selected=\"true\">Flights</button><button role=\"tab\" aria-selected=\"false\">Stay</button><button role=\"tab\" aria-selected=\"false\">Costs</button></nav>",
+      "css": ".ds-tabs{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none;background:var(--sea,#050B1C);border-block:1px solid var(--line,#1E2E57)}.ds-tabs button{flex:none;appearance:none;background:none;border:0;border-bottom:3px solid transparent;color:var(--steel,#8FA3C7);font:700 1rem \"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;padding:1rem .9rem .8rem;cursor:pointer;transition:color .2s,border-color .2s}.ds-tabs button:hover{color:var(--ink,#F3F6FC)}.ds-tabs button[aria-selected=true]{color:var(--crane,#E9C46A);border-bottom-color:var(--crane,#E9C46A)}.ds-tabs button:focus-visible{outline:2px solid var(--flag,#8DB4FF);outline-offset:-3px;border-radius:6px}"
+    },
+    {
+      "name": "Stay Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Recommended card: yellow border, score badge, pick tag, mono price, estimate tag, link button.",
+      "html": "<article class=\"ds-card ds-pick\"><div class=\"ds-head\"><h3>Hotel Galata</h3><span class=\"ds-score\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z\"/></svg>9.2</span></div><span class=\"ds-tag ds-tag-pick\">Top pick</span><div class=\"ds-price\">95 EUR <small>per night · 665 EUR total</small></div><span class=\"ds-tag ds-tag-est\">Estimate · Booking.com</span><span class=\"ds-tag ds-tag-live\">Live · Google Flights · 14:32</span><a class=\"ds-cbtn\" href=\"#\">Book</a></article>",
+      "css": ".ds-card{max-width:20rem;background:var(--panel,#0B1730);border:1px solid var(--line,#1E2E57);border-radius:18px;padding:1.35rem;display:flex;flex-direction:column;align-items:start;gap:.7rem;font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;color:var(--body,#DCE4F2);transition:border-color .3s}.ds-card:hover{border-color:#566BA3}.ds-card.ds-pick{border-color:var(--crane,#E9C46A)}.ds-head{display:flex;justify-content:space-between;align-items:start;gap:.75rem;align-self:stretch}.ds-head h3{margin:0;font-size:1.2rem;font-weight:800;line-height:1.15;color:var(--ink,#F3F6FC)}.ds-score{flex:none;font:700 .85rem \"JetBrains Mono\",\"Tajawal\",ui-monospace,monospace;background:var(--field,#0C1A38);color:var(--ink,#F3F6FC);border:1px solid #566BA3;border-radius:8px;padding:.2em .55em}.ds-score svg{width:.85em;height:.85em;margin-inline-end:.4em;vertical-align:-.08em;fill:currentColor}.ds-price{font:700 1.3rem \"JetBrains Mono\",\"Tajawal\",ui-monospace,monospace;color:var(--ink,#F3F6FC)}.ds-price small{font:500 .85rem \"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;color:var(--steel,#8FA3C7)}.ds-tag{display:inline-block;font:700 .8rem \"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;border-radius:99px;padding:.15em .7em;border:1px solid var(--line,#1E2E57);color:var(--steel,#8FA3C7)}.ds-tag-pick{background:var(--crane,#E9C46A);border-color:var(--crane,#E9C46A);color:var(--on-crane,#1A1405)}.ds-tag-live{border-color:var(--flag,#8DB4FF);color:var(--flag,#8DB4FF)}.ds-tag-est{border-style:dashed}.ds-cbtn{display:inline-block;background:var(--crane,#E9C46A);color:var(--on-crane,#1A1405);font-weight:800;text-decoration:none;border-radius:12px;padding:.6em 1.15em;transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s}.ds-cbtn:hover{transform:translateY(-2px);box-shadow:0 10px 22px -8px rgba(0,0,0,.65)}.ds-cbtn:focus-visible{outline:2px solid var(--flag,#8DB4FF);outline-offset:3px}"
+    },
+    {
+      "name": "Cost Table and Total",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Table in a panel wrapper with a washed pick row, and the total on a 2px yellow rule.",
+      "html": "<div class=\"ds-scroll\"><table class=\"ds-table\"><thead><tr><th>Item</th><th>Price</th></tr></thead><tbody><tr class=\"ds-row-pick\"><td>Flights</td><td class=\"ds-num\">680 EUR</td></tr><tr><td>Stay</td><td class=\"ds-num\">665 EUR</td></tr></tbody></table></div><div class=\"ds-total\"><span>Total</span><span class=\"ds-num\">1,345 EUR</span></div>",
+      "css": ".ds-scroll{overflow-x:auto;border:1px solid var(--line,#1E2E57);border-radius:18px;background:var(--panel,#0B1730);font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;color:var(--body,#DCE4F2)}.ds-table{width:100%;border-collapse:collapse}.ds-table th,.ds-table td{text-align:start;padding:.9rem 1rem;vertical-align:top}.ds-table th{color:var(--steel,#8FA3C7);font-size:.9rem;font-weight:700;border-bottom:1px solid var(--line,#1E2E57)}.ds-table tr+tr td{border-top:1px solid var(--line,#1E2E57)}.ds-table .ds-row-pick td{background:rgba(233,196,106,.07)}.ds-table td:last-child,.ds-table th:last-child{text-align:end}.ds-num{font-family:\"JetBrains Mono\",\"Tajawal\",ui-monospace,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}.ds-total{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-top:1.25rem;padding-top:1rem;border-top:2px solid var(--crane,#E9C46A);color:var(--ink,#F3F6FC);font-family:\"Tajawal\",\"Segoe UI\",Tahoma,sans-serif;font-weight:800;font-size:clamp(1.6rem,5vw,2.6rem)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lit Brief",
+    "overview": "This is the web rendition of Rayen's carousel world: a night-navy ground with one blue glow in a top corner, cool grey-blue text, and a single calm yellow. Everything sits dim until it means something. A chip is dim until chosen, a brief-line row is dim until its field is filled, a card is quiet until it is the recommendation. Then it lights yellow. The same yellow carries the one action on screen.\n\nThe system covers two surfaces that share one token set: the trip-brief form (a two-column checkout shape, form on one side and a sticky summary rail ending in one button on the other) and the travel dashboard (a destination hero, a sticky tab bar, then tables and cards). Both are dark only, flat, and dense enough to read as a tool: 1px lines, tonal layers, generous field height, no decoration that does not carry state.\n\nWords are set in Tajawal in both scripts. JetBrains Mono appears only where the content is trip data or the prompt itself: route, dates, prices, counts, scores, times.",
+    "keyCharacteristics": [
+      "Dark only: night-navy ground, three close tonal layers (ground, panel, field) separated by 1px navy lines.",
+      "One yellow, used for \"set\", \"picked\" and \"act\". One blue for focus, links, live-price tags and the copied state.",
+      "Two fonts with a hard split: Tajawal for language, JetBrains Mono for data.",
+      "Flat at rest. A shadow appears only when a yellow button lifts on hover.",
+      "Built for both directions: every offset is a logical property and the directional details mirror in RTL.",
+      "Motion is state feedback with an expo-out curve; all of it switches off under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Lit Rule",
+        "body": "Yellow is a state, not a decoration. It means set, picked, or act. An element that is none of those stays navy and steel.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark Text On Light Fill Rule",
+        "body": "Any yellow or flag-blue fill takes `on-crane` text. Ink and body never sit on a filled accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Glow Rule",
+        "body": "One radial blue glow per page, in the top corner at the inline end, fixed to the viewport. No second glow, no glow under components.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Is Data Rule",
+        "body": "JetBrains Mono is reserved for trip data and the prompt text: numbers, dates, times, prices, routes, scores, counts, the handle. Labels, headings, buttons and prose never use it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "Numbers that can be compared (prices, durations, counts) use tabular figures and do not wrap.",
+        "section": "typography"
+      },
+      {
+        "name": "The Heavy Floor Rule",
+        "body": "No text below weight 500. The hierarchy is 500 / 700 / 800.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat At Rest Rule",
+        "body": "Nothing casts a shadow at rest. The lift shadow belongs to yellow buttons on hover and to nothing else.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep an element dim (field fill, line border, steel text) until it is set, picked or the action; then light it with `crane`.",
+      "Do put `on-crane` text on every yellow or flag-blue fill.",
+      "Do set every number, date, time, price and route in JetBrains Mono with tabular figures; set every word of interface in Tajawal.",
+      "Do build depth from the three navy layers and 1px `line` borders.",
+      "Do use logical properties (inline start and end) for every offset, padding and alignment, and mirror any directional icon or draw-in under RTL.",
+      "Do give every control a visible focus ring: yellow on text fields, flag blue on everything else.",
+      "Do mark a price as either live (flag-blue tag with source and time) or estimate (dashed tag with source).",
+      "Do remove all animation and transition under `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "Don't introduce a second warm accent or a third hue; the palette is navy, one yellow, one blue, and coral for errors only.",
+      "Don't use yellow as a fill on something that is not selected, recommended or the primary action.",
+      "Don't mark more than one option per list as the pick; the yellow border, wash and tag belong to a single recommendation.",
+      "Don't set labels, headings, buttons or prose in JetBrains Mono.",
+      "Don't set text lighter than weight 500.",
+      "Don't add a shadow to a resting surface; the only shadow is the hover lift under a yellow button.",
+      "Don't add a light theme; the system is dark only (`color-scheme: dark`).",
+      "Don't use physical left and right for layout; the two existing exceptions are deliberate (the English prompt preview and LTR-wrapped times)."
+    ]
+  }
+}

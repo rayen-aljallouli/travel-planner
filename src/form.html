@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trip Planner for Claude</title>
+<meta name="description" content="Fill in your trip, copy the prompt, paste it into Claude and get a full travel dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="top">
+  <div>
+    <h1 data-t="title">Plan your trip with Claude</h1>
+    <p class="lede" data-t="lede">No more hours of searching and 50 open tabs. Fill in the brief, copy the prompt, paste it into Claude. You get a full travel dashboard: flights, stays, day plan and costs.</p>
+  </div>
+  <div class="switches">
+    <fieldset class="seg">
+      <legend class="sr" data-t="langLegend">Language</legend>
+      <label><input type="radio" name="lang" value="en" form="brief" checked><span>English</span></label>
+      <label><input type="radio" name="lang" value="ar" form="brief"><span lang="ar">العربية</span></label>
+    </fieldset>
+    <fieldset class="seg">
+      <legend class="sr" data-t="curLegend">Currency</legend>
+      <label><input type="radio" name="currency" value="EUR" form="brief" checked><span>EUR</span></label>
+      <label><input type="radio" name="currency" value="TND" form="brief"><span>TND</span></label>
+    </fieldset>
+  </div>
+</header>
+
+<form id="brief" novalidate>
+  <div>
+    <section>
+      <h2 data-t="sTrip">Your trip</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="dest" data-t="dest">Where to?</label>
+          <input type="text" id="dest" name="dest" autocomplete="off" maxlength="80" placeholder="Istanbul" aria-describedby="dest-err">
+          <p class="err" id="dest-err" hidden></p>
+        </div>
+        <div class="f">
+          <label for="from" data-t="from">Flying from</label>
+          <input type="text" id="from" name="from" autocomplete="off" maxlength="80" placeholder="Tunis (TUN)" aria-describedby="from-err">
+          <p class="err" id="from-err" hidden></p>
+        </div>
+      </div>
+      <div class="row two">
+        <div class="f">
+          <label for="start" data-t="start">Departure date</label>
+          <input type="date" id="start" name="start" aria-describedby="start-err">
+          <p class="err" id="start-err" hidden></p>
+        </div>
+        <div class="f">
+          <label for="end" data-t="end">Return date</label>
+          <input type="date" id="end" name="end" aria-describedby="end-err">
+          <p class="err" id="end-err" hidden></p>
+        </div>
+      </div>
+      <label class="check"><input type="checkbox" name="flex"><span data-t="flex">My dates are flexible by ±3 days</span></label>
+    </section>
+
+    <section>
+      <h2 data-t="sPeople">Travellers and budget</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="adults" data-t="adults">Adults</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="adults" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="adults" name="adults" min="1" max="12" value="2" inputmode="numeric">
+            <button type="button" data-step="1" data-for="adults" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+        <div class="f">
+          <label for="kids" data-t="kids">Children</label>
+          <div class="stepper">
+            <button type="button" data-step="-1" data-for="kids" data-al="less" aria-label="One less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <input type="number" id="kids" name="kids" min="0" max="12" value="0" inputmode="numeric">
+            <button type="button" data-step="1" data-for="kids" data-al="more" aria-label="One more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="ages-row" hidden>
+        <div class="ages" id="ages"></div>
+        <p class="hint" data-t="agesHint">Age on the day of travel. Many airlines and hotels charge by age.</p>
+        <p class="err" id="ages-err" hidden></p>
+      </div>
+      <div class="row">
+        <div class="f">
+          <label for="budget" data-t="budget">Budget for flights and accommodation</label>
+          <div class="money">
+            <input type="number" id="budget" name="budget" min="0" step="50" inputmode="numeric" placeholder="1500">
+            <output id="cur">EUR</output>
+          </div>
+        </div>
+      </div>
+      <label class="check"><input type="checkbox" name="nobudget" id="nobudget"><span data-t="noBudget">No fixed budget, find me the best value</span></label>
+    </section>
+
+    <section>
+      <h2 data-t="sStyle">Your style</h2>
+      <fieldset class="group">
+        <legend data-t="vibeLegend">What matters on this trip?</legend>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="vibe" value="Beach and switching off"><span data-t="vBeach">Beach &amp; relax</span></label>
+          <label class="chip"><input type="checkbox" name="vibe" value="Culture and city"><span data-t="vCulture">Culture &amp; city</span></label>
+          <label class="chip"><input type="checkbox" name="vibe" value="Outdoor and adventure"><span data-t="vOutdoor">Outdoor &amp; adventure</span></label>
+          <label class="chip"><input type="checkbox" name="vibe" value="Food"><span data-t="vFood">Food</span></label>
+          <label class="chip"><input type="checkbox" name="vibe" value="Nightlife"><span data-t="vNight">Nightlife</span></label>
+          <label class="chip"><input type="checkbox" name="vibe" value="Family"><span data-t="vFamily">Family</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="group">
+        <legend data-t="extrasLegend">Anything special?</legend>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="extra" value="Halal food"><span data-t="xHalal">Halal food</span></label>
+          <label class="chip"><input type="checkbox" name="extra" value="Vegetarian or vegan food"><span data-t="xVeg">Vegetarian</span></label>
+          <label class="chip"><input type="checkbox" name="extra" value="Rental car"><span data-t="xCar">Rental car</span></label>
+          <label class="chip"><input type="checkbox" name="extra" value="Wheelchair accessible"><span data-t="xAccess">Wheelchair accessible</span></label>
+          <label class="chip"><input type="checkbox" name="extra" value="Travelling with a pet"><span data-t="xPet">Pet with me</span></label>
+        </div>
+      </fieldset>
+      <div class="row two">
+        <div class="f">
+          <label for="stay" data-t="stay">Accommodation type</label>
+          <select id="stay" name="stay">
+            <option value="any" data-t="stAny">Any</option>
+            <option value="hotel" data-t="stHotel">Hotel</option>
+            <option value="apartment" data-t="stApt">Apartment</option>
+            <option value="hostel">Hostel</option>
+            <option value="resort">Resort</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="f">
+          <label for="notes" data-t="notes">Anything else Claude should know?</label>
+          <textarea id="notes" name="notes" rows="2" maxlength="500" data-ph="notesPh" placeholder="A hotel close to the sea, no early flights"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 data-t="sPassport">Passport</h2>
+      <div class="row two">
+        <div class="f">
+          <label for="nationality" data-t="nat">Nationality</label>
+          <input type="text" id="nationality" name="nationality" autocomplete="off" maxlength="60" data-ph="natPh" placeholder="Tunisian" aria-describedby="nat-hint">
+        </div>
+      </div>
+      <p class="hint" id="nat-hint" data-t="natHint">Optional. With it, Claude checks whether you need a visa and how to get it.</p>
+    </section>
+  </div>
+
+  <aside class="rail">
+    <h2 class="sr" data-t="summary">Your brief</h2>
+    <dl class="bl">
+      <div id="bl-route"><dt data-t="blRoute">Route</dt><dd></dd></div>
+      <div id="bl-dates"><dt data-t="blDates">Dates</dt><dd></dd></div>
+      <div id="bl-who"><dt data-t="blWho">Travellers</dt><dd></dd></div>
+      <div id="bl-budget"><dt data-t="blBudget">Budget</dt><dd></dd></div>
+    </dl>
+
+    <button type="submit" class="go" id="create"><span data-t="go">Create prompt</span><svg class="dir" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <p class="err" id="form-err" role="alert" hidden></p>
+
+    <div class="result" id="result" tabindex="-1" hidden>
+      <h2 data-t="ready">Your prompt is ready</h2>
+      <textarea id="out" readonly dir="ltr" lang="en" data-al="outLabel" aria-label="Generated prompt"></textarea>
+      <p class="meta" id="meta"></p>
+      <button type="button" class="go" id="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><span id="copy-label" data-t="copy">Copy prompt</span></button>
+      <p class="err" id="copy-err" role="alert" hidden></p>
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </aside>
+</form>
+
+<footer>
+  <span data-t="foot">Claude only researches. You book and pay yourself. Independent project, not affiliated with Anthropic.</span>
+  <a href="umrah.html" data-t="navOther">Umrah planner</a>
+  <a href="https://ko-fi.com/rayen_aljallouli" target="_blank" rel="noopener" data-t="support">Support this project on Ko-fi</a>
+  <a href="https://www.instagram.com/rayen.aljallouli/" target="_blank" rel="noopener" dir="ltr">@rayen.aljallouli</a>
+</footer>
+</div>
+
+<script>
+/*__PROMPT_JS__*/
+const TPL = "__TPL__", DASH = "__DASH__";
+
+const I18N = {
+  en: {
+    title: 'Plan your trip with Claude',
+    lede: 'No more hours of searching and 50 open tabs. Fill in the brief, copy the prompt, paste it into Claude. You get a full travel dashboard: flights, stays, day plan and costs.',
+    sTrip: 'Your trip', dest: 'Where to?', from: 'Flying from', start: 'Departure date', end: 'Return date',
+    flex: 'My dates are flexible by ±3 days',
+    sPeople: 'Travellers and budget',
+    budget: 'Budget for flights and accommodation',
+    sStyle: 'Your style', vibeLegend: 'What matters on this trip?',
+    vBeach: 'Beach & relax', vCulture: 'Culture & city', vOutdoor: 'Outdoor & adventure', vFood: 'Food', vNight: 'Nightlife', vFamily: 'Family',
+    extrasLegend: 'Anything special?',
+    xHalal: 'Halal food', xVeg: 'Vegetarian', xCar: 'Rental car', xAccess: 'Wheelchair accessible', xPet: 'Pet with me',
+    stay: 'Accommodation type', stAny: 'Any', stHotel: 'Hotel', stApt: 'Apartment',
+    notes: 'Anything else Claude should know?', notesPh: 'A hotel close to the sea, no early flights',
+    sPassport: 'Passport', nat: 'Nationality', natPh: 'Tunisian',
+    natHint: 'Optional. With it, Claude checks whether you need a visa and how to get it.',
+    phTo: 'To',
+    go: 'Create prompt', navOther: 'Umrah planner',
+    steps: ['Open the Claude desktop app and switch to Cowork (paid plan). Claude then reads real prices in the browser. A normal chat on claude.ai works too, with estimated prices.', 'Paste the prompt and send it.', 'Give Claude a few minutes. It researches, then hands you the dashboard.'],
+    eDest: 'Tell Claude where you want to go.',
+    eEnd: 'Pick your return date.', eOrder: 'The return date must be after the departure date.',
+  },
+  ar: {
+    title: 'خطّط رحلتك مع Claude',
+    lede: 'لا مزيد من ساعات البحث و 50 تبويبًا مفتوحًا. املأ المعلومات، انسخ الـ prompt والصقه في Claude. ستحصل على لوحة معلومات (dashboard) كاملة لرحلتك: الطيران، الإقامة، برنامج الأيام والتكاليف.',
+    sTrip: 'رحلتك', dest: 'إلى أين؟', from: 'من أين تسافر؟', start: 'تاريخ الذهاب', end: 'تاريخ العودة',
+    flex: 'تواريخي مرنة بـ ±3 أيام',
+    sPeople: 'المسافرون والميزانية',
+    budget: 'ميزانية الطيران والإقامة',
+    sStyle: 'أسلوبك', vibeLegend: 'ما الذي يهمك في هذه الرحلة؟',
+    vBeach: 'شاطئ واسترخاء', vCulture: 'ثقافة ومدينة', vOutdoor: 'طبيعة ومغامرة', vFood: 'الطعام', vNight: 'الحياة الليلية', vFamily: 'العائلة',
+    extrasLegend: 'هل لديك طلبات خاصة؟',
+    xHalal: 'طعام حلال', xVeg: 'نباتي', xCar: 'استئجار سيارة', xAccess: 'مناسب للكراسي المتحركة', xPet: 'معي حيوان أليف',
+    stay: 'نوع الإقامة', stAny: 'أي نوع', stHotel: 'فندق', stApt: 'شقة',
+    notes: 'هل هناك شيء آخر يجب أن يعرفه Claude؟', notesPh: 'فندق قريب من البحر، بدون رحلات في الصباح الباكر',
+    sPassport: 'جواز السفر', nat: 'الجنسية', natPh: 'تونسي',
+    natHint: 'اختياري. إذا أضفتها، يتحقق Claude مما إذا كنت تحتاج إلى تأشيرة وكيف تحصل عليها.',
+    phTo: 'إلى',
+    go: 'أنشئ الـ prompt', navOther: 'مخطط العمرة',
+    steps: ['افتح تطبيق Claude على الحاسوب وانتقل إلى Cowork (اشتراك مدفوع). عندها يقرأ Claude الأسعار الحقيقية في المتصفح. المحادثة العادية على claude.ai تعمل أيضًا، لكن بأسعار تقديرية.', 'الصق الـ prompt وأرسله.', 'امنح Claude بضع دقائق. يبحث أولًا، ثم يسلّمك اللوحة.'],
+    eDest: 'أخبر Claude إلى أين تريد السفر.',
+    eEnd: 'اختر تاريخ العودة.', eOrder: 'يجب أن يكون تاريخ العودة بعد تاريخ الذهاب.',
+  },
+};
+
+
+const ERR_IDS = ['dest', 'from', 'start', 'end'];
+
+function read() {
+  syncAges();
+  const fd = new FormData(form);
+  const n = (k, lo, hi) => Math.min(hi, Math.max(lo, Math.round(+fd.get(k)) || lo));
+  return {
+    dest: fd.get('dest').trim(), from: fd.get('from').trim(), start: fd.get('start'), end: fd.get('end'), flex: fd.has('flex'),
+    adults: n('adults', 1, 12), ages: fd.getAll('age'),
+    budget: fd.has('nobudget') ? 0 : n('budget', 0, 1e7), currency: fd.get('currency'),
+    vibes: fd.getAll('vibe'), extras: fd.getAll('extra'), stay: fd.get('stay'), notes: fd.get('notes'),
+    nationality: fd.get('nationality'), lang,
+  };
+}
+
+function problems(d) {
+  const p = [];
+  if (!d.dest) p.push(['dest', 'eDest']);
+  if (!d.from) p.push(['from', 'eFrom']);
+  if (!d.start) p.push(['start', 'eStart']);
+  if (!d.end) p.push(['end', 'eEnd']);
+  else if (d.start && d.end <= d.start) p.push(['end', 'eOrder']);
+  const gap = d.ages.indexOf('');
+  if (gap >= 0) p.push(['age' + (gap + 1), 'eAges']);
+  return p;
+}
+
+function brief(d) {
+  const arrow = lang === 'ar' ? ' ← ' : ' → ';
+  const nights = d.start && d.end ? Math.round((Date.parse(d.end) - Date.parse(d.start)) / 864e5) : 0;
+  setLine('bl-route', isolate(d.from || t('phFrom')) + arrow + isolate(d.dest || t('phTo')), !!(d.from && d.dest));
+  setLine('bl-dates', nights > 0 ? shortDate(d.start) + ' – ' + shortDate(d.end) + ' · ' + plural(nights, 'night', 'nights') + (d.flex ? ' ·\u00A0±3' : '') : t('phDates'), nights > 0);
+  if (d.start) form.end.min = d.start;
+}
+
+const build = (d) => buildPrompt(TPL, DASH, d);
+
+/*__CORE_JS__*/
+</script>
+</body>
+</html>
